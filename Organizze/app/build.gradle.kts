@@ -28,6 +28,12 @@ android {
             )
         }
     }
+
+    // Config. Slider
+    dataBinding{
+        enable = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -53,4 +59,6 @@ dependencies {
     // Config. Authentication
     implementation("com.google.firebase:firebase-auth")
 
+    // Config. Slider
+    implementation("com.heinrichreimersoftware:material-intro:2.0.0")
 }

@@ -10,6 +10,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+
+        // Config. Slider
+        maven("https://jitpack.io")
     }
 }
 
