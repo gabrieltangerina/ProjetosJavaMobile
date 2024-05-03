@@ -34,12 +34,16 @@
 
     <Button
         android:id="@+id/btnCadastrar"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:onClick="btnCadastrar"
         android:text="Cadastre-se"
+        android:textColor="@color/white"
+        android:background="#01C7D2"
         app:layout_constraintBottom_toTopOf="@+id/btnLogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

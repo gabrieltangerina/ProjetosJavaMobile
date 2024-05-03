@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.Organizze" parent="Theme.AppCompat.Light">
+    <style name="Base.Theme.Organizze" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">#01C7D2</item>
         <item name="colorPrimaryDark">#00B2BC</item>
         <item name="colorAccent">#FF706A</item>
