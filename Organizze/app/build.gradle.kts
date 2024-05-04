@@ -66,4 +66,7 @@ dependencies {
 
     // Config. Slider
     implementation("com.heinrichreimersoftware:material-intro:2.0.0")
+
+    // Config. FloatingActionButton
+    implementation("com.github.clans:fab:1.6.4")
 }
