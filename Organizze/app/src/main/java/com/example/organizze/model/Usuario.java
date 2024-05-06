@@ -1,7 +1,18 @@
 package com.example.organizze.model;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.example.organizze.config.ConfiguracaoFirebase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
+
 public class Usuario {
-    private String nome, email, senha;
+    private String nome, email, senha, idUsuario;
 
     public Usuario(String nome, String email, String senha) {
         this.nome = nome;
@@ -15,6 +26,22 @@ public class Usuario {
     }
 
     public Usuario() {
+    }
+
+    public void salvarFirebase(){
+        DatabaseReference firebase = ConfiguracaoFirebase.getFirebaseDatabase();
+        firebase.child("usuarios")
+                .child(this.idUsuario)
+                .setValue(this); // Salvando o objeto usuário no banco de dados. O @Exclude é para não pegar esses atributos no this
+    }
+
+    @Exclude
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getNome() {
@@ -33,6 +60,7 @@ public class Usuario {
         this.email = email;
     }
 
+    @Exclude
     public String getSenha() {
         return senha;
     }
