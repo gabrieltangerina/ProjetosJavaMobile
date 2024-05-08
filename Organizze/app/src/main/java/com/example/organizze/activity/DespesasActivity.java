@@ -63,10 +63,12 @@ public class DespesasActivity extends AppCompatActivity {
         Double despesaAtualizada = despesaTotal + valor;
         atualizarDespesas(despesaAtualizada);
 
-        movimentacao.salvar(data);
-        Toast.makeText(this, "Despesa salva", Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, "Falha ao salvar despesa", Toast.LENGTH_SHORT).show();
-
+        try{
+            movimentacao.salvar(data);
+            Toast.makeText(this, "Despesa salva", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Toast.makeText(this, "Falha ao salvar salva", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public boolean validarCamposDespesas(){
