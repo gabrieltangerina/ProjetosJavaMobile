@@ -18,6 +18,8 @@ public class DespesasActivity extends AppCompatActivity {
     private TextInputEditText campoData, campoCategoria, campoDescricao;
     private EditText campoValor;
     private Movimentacao movimentacao;
+    private String textoData, textoCategoria, textoDescricao;
+    private Double textoValor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,9 @@ public class DespesasActivity extends AppCompatActivity {
     }
 
     public void salvarDespesa(View v){
+
+        if(!validarCamposDespesas()) return;
+
         String data = campoData.getText().toString();
 
         movimentacao = new Movimentacao(
@@ -43,11 +48,30 @@ public class DespesasActivity extends AppCompatActivity {
                 "d",
                 Double.parseDouble(campoValor.getText().toString()));
 
-                try{
-                    movimentacao.salvar(data);
-                    Toast.makeText(this, "Despesa salva", Toast.LENGTH_SHORT).show();
-                }catch (Exception e){
-                    Toast.makeText(this, "Falha ao salvar despesa", Toast.LENGTH_SHORT).show();
-                }
+        try{
+            movimentacao.salvar(data);
+            Toast.makeText(this, "Despesa salva", Toast.LENGTH_SHORT).show();
+        }catch (Exception e){
+            Toast.makeText(this, "Falha ao salvar despesa", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public boolean validarCamposDespesas(){
+
+        if(campoData.getText().toString().isEmpty()){
+            Toast.makeText(this, "Campo 'Data' precisa ser preenchido", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(campoCategoria.getText().toString().isEmpty()){
+            Toast.makeText(this, "Campo 'Categoria' precisa ser preenchido", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(campoDescricao.getText().toString().isEmpty()){
+            Toast.makeText(this, "Campo 'Descrição' precisa ser preenchido", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(campoValor.getText().toString().isEmpty()){
+            Toast.makeText(this, "Campo 'Valor' precisa ser preenchido", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 }
