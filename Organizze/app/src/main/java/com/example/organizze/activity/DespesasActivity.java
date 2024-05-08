@@ -72,17 +72,21 @@ public class DespesasActivity extends AppCompatActivity {
     }
 
     public boolean validarCamposDespesas(){
+        String data = campoData.getText().toString();
+        String categoria = campoCategoria.getText().toString();
+        String descricao = campoDescricao.getText().toString();
+        String valor = campoValor.getText().toString();
 
-        if(campoData.getText().toString().isEmpty()){
+        if(data.isEmpty()){
             Toast.makeText(this, "Campo 'Data' precisa ser preenchido", Toast.LENGTH_SHORT).show();
             return false;
-        }else if(campoCategoria.getText().toString().isEmpty()){
+        }else if(categoria.isEmpty()){
             Toast.makeText(this, "Campo 'Categoria' precisa ser preenchido", Toast.LENGTH_SHORT).show();
             return false;
-        }else if(campoDescricao.getText().toString().isEmpty()){
+        }else if(descricao.isEmpty()){
             Toast.makeText(this, "Campo 'Descrição' precisa ser preenchido", Toast.LENGTH_SHORT).show();
             return false;
-        }else if(campoValor.getText().toString().isEmpty()){
+        }else if(valor.isEmpty()){
             Toast.makeText(this, "Campo 'Valor' precisa ser preenchido", Toast.LENGTH_SHORT).show();
             return false;
         }

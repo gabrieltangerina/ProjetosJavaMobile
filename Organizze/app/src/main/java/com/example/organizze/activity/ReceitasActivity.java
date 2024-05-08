@@ -28,12 +28,15 @@ public class ReceitasActivity extends AppCompatActivity {
         campoDescricao = findViewById(R.id.editDescricao);
         campoValor = findViewById(R.id.editValor);
 
-        // Adicionando data atual no campo data
+        // Preenche o campo data com a data atual
         campoData.setText(DateCustom.dataAtual());
 
     }
 
     public void salvaReceita(View v){
+
+        if(!validaCamposReceita()) return;
+
         String data = campoData.getText().toString();
         String categoria = campoCategoria.getText().toString();
         String descricao = campoDescricao.getText().toString();
@@ -47,5 +50,28 @@ public class ReceitasActivity extends AppCompatActivity {
         }catch (Exception e){
             Toast.makeText(this, "Falha ao salvar receita " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public boolean validaCamposReceita(){
+        String data = campoData.getText().toString();
+        String categoria = campoCategoria.getText().toString();
+        String descricao = campoDescricao.getText().toString();
+        String valor = campoValor.getText().toString();
+
+        if(data.isEmpty()){
+            Toast.makeText(this, "Campo 'Data' precisa ser preenchido", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(categoria.isEmpty()){
+            Toast.makeText(this, "Campo 'Categoria' precisa ser preenchido", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(descricao.isEmpty()){
+            Toast.makeText(this, "Campo 'Descrição' precisa ser preenchido", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if(valor.isEmpty()){
+            Toast.makeText(this, "Campo 'Valor' precisa ser preenchido", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 }
