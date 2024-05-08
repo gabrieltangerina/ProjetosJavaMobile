@@ -13,4 +13,14 @@ public class DateCustom {
         return dataString;
     }
 
+    public static String mesAnoDataEscolhida(String data){
+
+        String retornoData[] = data.split("/"); // Quebra a String em pedaços e adiciona em um array onde os indices são as quebras
+        String mes = retornoData[1];
+        String ano = retornoData[2];
+        String dataFormatada = mes + ano;
+
+        return dataFormatada;
+    }
+
 }
