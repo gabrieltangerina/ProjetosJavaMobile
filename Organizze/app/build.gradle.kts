@@ -69,4 +69,7 @@ dependencies {
 
     // Config. FloatingActionButton
     implementation("com.github.clans:fab:1.6.4")
+
+    // Config. CalendarView
+    implementation("com.github.prolificinteractive:material-calendarview:1.4.2")
 }
