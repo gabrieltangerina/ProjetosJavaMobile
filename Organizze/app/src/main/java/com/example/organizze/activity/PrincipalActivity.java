@@ -59,6 +59,9 @@ public class PrincipalActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AdapterMovimentacao adapterMovimentacao;
     private List<Movimentacao> movimentacaos = new ArrayList<>();
+    private DatabaseReference movimentacaoRef;
+    private String mesAnoSeleciona;
+    private ValueEventListener valueEventListenerMovimentacoes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +84,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
         // Conf. Adapter
         adapterMovimentacao = new AdapterMovimentacao(movimentacaos, this);
-        
+
         //Conf. RecyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -91,12 +94,41 @@ public class PrincipalActivity extends AppCompatActivity {
 
     }
 
+    public void recuperarMovimentacoes(){
+
+        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+
+        movimentacaoRef = firebaseRef.child("movimentacao")
+                                     .child(idUsuario)
+                                     .child(mesAnoSeleciona);
+
+        valueEventListenerMovimentacoes = movimentacaoRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                movimentacaos.clear();
+                for(DataSnapshot dados : snapshot.getChildren()){
+                    Movimentacao movimentacao = dados.getValue(Movimentacao.class);
+                    movimentacaos.add(movimentacao);
+                }
+
+                adapterMovimentacao.notifyDataSetChanged(); // Notifica o adapter que os dados mudaram
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 
     // Anexando evento de Listener
     @Override
     protected void onStart() {
         super.onStart();
         recuperarResumo();
+        recuperarMovimentacoes();
     }
 
     // Removendo o evento de Listener quando sai da tela Principal
@@ -104,6 +136,7 @@ public class PrincipalActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         usuarioRef.removeEventListener(valueEventListenerUsuario);
+        movimentacaoRef.removeEventListener(valueEventListenerMovimentacoes);
     }
 
     // Pega os valores nome e saldo para adicionar aos campos
@@ -167,10 +200,19 @@ public class PrincipalActivity extends AppCompatActivity {
         CharSequence diasSemana[] = {"Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"};
         calendarView.setWeekDayLabels(diasSemana);
 
+        // Data que o calendário inicia, ou seja, quando ele abre e nao ocorre o onMonthChanged
+        CalendarDay dataCalendario = calendarView.getCurrentDate();
+        String mesSelecionado = String.format("%02d", (dataCalendario.getMonth() + 1)); // Adicionando um 0 antes do numero para ficar 022024 e nao 22024
+        mesAnoSeleciona = String.valueOf(mesSelecionado + "" + dataCalendario.getYear());
+
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                // Toast.makeText(PrincipalActivity.this, (date.getMonth() + 1) + "" , Toast.LENGTH_SHORT).show();
+                String mesSelecionado = String.format("%02d", (date.getMonth() + 1)); // Adicionando um 0 antes do numero para ficar 022024 e nao 22024
+                mesAnoSeleciona = String.valueOf(mesSelecionado + date.getYear());
+
+                movimentacaoRef.removeEventListener(valueEventListenerMovimentacoes); // O "recuperarMovimentacoes()" adiciona um Listener, para evitar add vários Listener é removido o anterior
+                recuperarMovimentacoes();
             }
         });
     }
