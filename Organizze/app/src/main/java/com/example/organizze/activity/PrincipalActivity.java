@@ -98,6 +98,21 @@ public class PrincipalActivity extends AppCompatActivity {
         swipe();
     }
 
+    public void atualizaSaldo(){
+        if(movimentacaoExclusao.getTipo().equalsIgnoreCase("r")){
+            receitaTotal = receitaTotal - movimentacaoExclusao.getValor();
+
+            String emailUsuario = autenticacao.getCurrentUser().getEmail();
+            String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+            usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
+
+            usuarioRef.child("receitaTotal").setValue(receitaTotal);
+        }else if(movimentacaoExclusao.getTipo().equalsIgnoreCase("d")){
+            despesaTotal = despesaTotal - movimentacaoExclusao.getValor();
+            usuarioRef.child("despesaTotal").setValue(despesaTotal);
+        }
+    }
+
     public void excluirMovimentacao(RecyclerView.ViewHolder viewHolder){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 
@@ -122,6 +137,7 @@ public class PrincipalActivity extends AppCompatActivity {
 
                 movimentacaoRef.removeValue();
                 adapterMovimentacao.notifyItemRemoved(posicaoItem);
+                atualizaSaldo();
             }
         });
 
