@@ -3,10 +3,14 @@ package com.example.organizze.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.organizze.config.ConfiguracaoFirebase;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ import androidx.navigation.ui.NavigationUI;
 import com.example.organizze.databinding.ActivityPrincipalBinding;
 
 import com.example.organizze.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
@@ -31,6 +36,7 @@ public class PrincipalActivity extends AppCompatActivity {
     private ActivityPrincipalBinding binding;
     private MaterialCalendarView calendarView;
     private TextView textoSaudacao, textoSaldo;
+    private FirebaseAuth autenticacao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +46,7 @@ public class PrincipalActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         binding.toolbar.setTitle("");
+        binding.toolbar.setElevation(0);
         setSupportActionBar(binding.toolbar);
 
         textoSaldo = findViewById(R.id.textSaldo);
@@ -59,6 +66,23 @@ public class PrincipalActivity extends AppCompatActivity {
         });
          */
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_principal, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.menuSair){
+            autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+            autenticacao.signOut();
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void adicionarReceita(View view){
@@ -81,7 +105,7 @@ public class PrincipalActivity extends AppCompatActivity {
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                Toast.makeText(PrincipalActivity.this, (date.getMonth() + 1) + "" , Toast.LENGTH_SHORT).show();
+                // Toast.makeText(PrincipalActivity.this, (date.getMonth() + 1) + "" , Toast.LENGTH_SHORT).show();
             }
         });
     }
