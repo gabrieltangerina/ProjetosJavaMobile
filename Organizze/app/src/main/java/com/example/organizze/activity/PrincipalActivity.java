@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.organizze.config.ConfiguracaoFirebase;
+import com.example.organizze.helper.Base64Custom;
+import com.example.organizze.model.Usuario;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
@@ -26,9 +28,15 @@ import com.example.organizze.databinding.ActivityPrincipalBinding;
 
 import com.example.organizze.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
+
+import java.text.DecimalFormat;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -36,7 +44,9 @@ public class PrincipalActivity extends AppCompatActivity {
     private ActivityPrincipalBinding binding;
     private MaterialCalendarView calendarView;
     private TextView textoSaudacao, textoSaldo;
-    private FirebaseAuth autenticacao;
+    private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
+    private DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+    private Double despesaTotal = 0.0, receitaTotal = 0.0, resumoUsuario = 0.0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +65,36 @@ public class PrincipalActivity extends AppCompatActivity {
         calendarView = findViewById(R.id.calendarView);
         configuraCalendario();
 
-        /*
-        binding.fab.setOnClickListener(new View.OnClickListener() {
+        recuperarResumo();
+
+    }
+
+    // Pega os valores nome e saldo para adicionar aos campos
+    public void recuperarResumo(){
+        String emailUsuario = autenticacao.getCurrentUser().getEmail();
+        String idUsuario = Base64Custom.codificarBase64(emailUsuario);
+        DatabaseReference usuarioRef = firebaseRef.child("usuarios").child(idUsuario);
+
+        usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Usuario usuario = snapshot.getValue(Usuario.class);
+                despesaTotal = usuario.getDespesaTotal();
+                receitaTotal = usuario.getReceitaTotal();
+                resumoUsuario = receitaTotal - despesaTotal;
+
+                DecimalFormat decimalFormat = new DecimalFormat("0.##");
+                String resumoUsuarioFormatado = decimalFormat.format(resumoUsuario);
+
+                textoSaudacao.setText("Olá, " + usuario.getNome());
+                textoSaldo.setText("R$ " + resumoUsuarioFormatado);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
-         */
-
     }
 
     @Override
@@ -77,7 +106,6 @@ public class PrincipalActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.menuSair){
-            autenticacao = ConfiguracaoFirebase.getFirebaseAutenticacao();
             autenticacao.signOut();
             startActivity(new Intent(this, MainActivity.class));
             finish();

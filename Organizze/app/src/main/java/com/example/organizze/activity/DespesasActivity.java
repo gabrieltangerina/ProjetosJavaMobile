@@ -66,6 +66,7 @@ public class DespesasActivity extends AppCompatActivity {
             movimentacao.salvar(data);
             atualizarDespesas(despesaAtualizada);
             Toast.makeText(this, "Despesa salva", Toast.LENGTH_SHORT).show();
+            finish();
         }catch (Exception e){
             Toast.makeText(this, "Falha ao salvar salva", Toast.LENGTH_SHORT).show();
         }

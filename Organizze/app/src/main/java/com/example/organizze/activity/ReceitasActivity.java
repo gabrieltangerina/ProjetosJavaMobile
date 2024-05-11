@@ -63,6 +63,7 @@ public class ReceitasActivity extends AppCompatActivity {
             movimentacao.salvar(data);
             atualizaReceitaTotalUser(receitaAtualizada);
             Toast.makeText(this, "Receita salva com sucesso", Toast.LENGTH_SHORT).show();
+            finish();
         }catch (Exception e){
             Toast.makeText(this, "Falha ao salvar receita " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
