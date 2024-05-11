@@ -8,7 +8,7 @@ import com.google.firebase.database.DatabaseReference;
 
 public class Movimentacao {
 
-    private String data, categoria, descricao, tipo;
+    private String data, categoria, descricao, tipo, id;
     private double valor;
 
     public Movimentacao() {
@@ -34,6 +34,14 @@ public class Movimentacao {
                   .push() // O push faz gerar um id aleatório no firebase
                   .setValue(this); // salva todos os atributos dessa classe nesse caminho
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getData() {
