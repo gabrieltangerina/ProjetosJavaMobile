@@ -3,8 +3,10 @@ package com.example.organizze.activity;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.organizze.adapter.AdapterMovimentacao;
 import com.example.organizze.config.ConfiguracaoFirebase;
 import com.example.organizze.helper.Base64Custom;
+import com.example.organizze.model.Movimentacao;
 import com.example.organizze.model.Usuario;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -15,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,6 +26,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.organizze.databinding.ActivityPrincipalBinding;
 
@@ -37,6 +42,8 @@ import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PrincipalActivity extends AppCompatActivity {
 
@@ -49,6 +56,9 @@ public class PrincipalActivity extends AppCompatActivity {
     private Double despesaTotal = 0.0, receitaTotal = 0.0, resumoUsuario = 0.0;
     private DatabaseReference usuarioRef;
     private ValueEventListener valueEventListenerUsuario;
+    private RecyclerView recyclerView;
+    private AdapterMovimentacao adapterMovimentacao;
+    private List<Movimentacao> movimentacaos = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +76,18 @@ public class PrincipalActivity extends AppCompatActivity {
 
         calendarView = findViewById(R.id.calendarView);
         configuraCalendario();
+
+        recyclerView = findViewById(R.id.recyclerView);
+
+        // Conf. Adapter
+        adapterMovimentacao = new AdapterMovimentacao(movimentacaos, this);
+        
+        //Conf. RecyclerView
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setAdapter(adapterMovimentacao);
+
 
     }
 
