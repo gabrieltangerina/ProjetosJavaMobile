@@ -10,6 +10,6 @@ O intuito desse repositório é fornecer exemplos práticos de implementações 
 
 Os projetos estão organizados em diferentes páginas dentro deste repositório. Cada página é dedicada a um projeto específico e contém detalhes sobre sua funcionalidade, instruções de uso e informações de implementação, além dos conhecimentos que obtive ao desenvolvê-lo.
 
-- [Organizze - Controle financeiro](#projeto-organizze)
+# Projetos
 
-# Organizze: Controle financeiro {#projeto-organizze}
+- [Organizze - Controle financeiro](#projeto-organizze)
