@@ -12,5 +12,5 @@ Os projetos estão organizados em diferentes páginas dentro deste repositório.
 
 # Projetos
 
-- [Organizze - Controle financeiro](#projeto-organizze)
+- [Organizze - Controle financeiro](https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrganizzeDocs/organizze.md)
 
