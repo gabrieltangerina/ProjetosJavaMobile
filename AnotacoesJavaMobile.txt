@@ -1,0 +1,3 @@
+TarefaDAO -> Salva os dados *Cria-se uma interface para criar os métodos da classe DAO
+DbHelper -> Cria as tabelas
+Model -> É o objeto salvo na tabela. Exemplo Tarefa(possui os atributos de uma tarefa)
