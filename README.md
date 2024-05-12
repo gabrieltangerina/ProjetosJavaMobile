@@ -13,3 +13,24 @@ Os projetos estão organizados em diferentes páginas dentro deste repositório.
 # Projetos
 
 - [Organizze - Controle financeiro](#projeto-organizze)
+
+
+## Organizze 
+
+Organizze é um aplicativo de controle financeiro pessoal. Seu objetivo é oferecer praticidade e facilitar o controle dos usuários com seus gastos e receitas. 
+
+## Tecnologias usadas
+
+- Java para o desenvolvimento da lógica de negócios.
+- Android SDK para a criação da interface do usuário.
+- Banco de dados SQLite para armazenamento de dados local.
+
+## Aprendizados no desenvolvimento
+
+- Autenticação e inserção de dados no Firebase
+- Configuração e implementação do slider da biblioteca [material-intro](https://github.com/heinrichreimer/material-intro)
+- Configuração e implementação do Floating Action Menu da biblioteca [FloatingActionButton](https://github.com/Clans/FloatingActionButton)
+
+## Ideias a serem implementadas
+
+- Adicionar metas de valores a serem guardados
