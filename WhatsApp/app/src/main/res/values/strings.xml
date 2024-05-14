@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">WhatsApp</string>
+
+    <!-- Activity Login   -->
+    <string name="hint_input_email">Digite seu e-mail</string>
+    <string name="hint_input_password">Digite sua senha</string>
+    <string name="button_login">Logar</string>
+    <string name="nao_tem_conta">Não tem conta? Cadastre-se</string>
+
+    <!-- Activity Cadastro   -->
+    <string name="hint_input_nome">Digite seu nome</string>
+    <string name="button_cadastrar">Cadastrar</string>
+
 </resources>
