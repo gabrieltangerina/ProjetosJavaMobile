@@ -18,10 +18,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth autenticacao;
+    private FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAuth();
     private TextInputEditText inputEmail;
     private TextInputEditText inputSenha;
 
@@ -43,12 +44,22 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(new Intent(LoginActivity.this, MainActivity.class));
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Verificando se o usuário está logado
+        FirebaseUser usuarioAtual = autenticacao.getCurrentUser();
+        if(usuarioAtual != null){
+            abrirTelaPrincipal();
+        }
+    }
+
     public void logarUsuario(View view){
         String textoEmail = String.valueOf(inputEmail.getText());
         String textoSenha = String.valueOf(inputSenha.getText());
 
         if(validaCampos(textoEmail, textoSenha)){
-            autenticacao = ConfiguracaoFirebase.getFirebaseAuth();
             autenticacao.signInWithEmailAndPassword(textoEmail, textoSenha).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
