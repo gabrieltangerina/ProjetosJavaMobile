@@ -55,4 +55,8 @@ dependencies {
 
     // Config. Storage Firebase
     implementation("com.google.firebase:firebase-storage")
+
+    // Config. SmartTabLayout
+    implementation("com.ogaclejapan.smarttablayout:utils-v4:2.0.0@aar")
+    implementation("com.ogaclejapan.smarttablayout:library:2.0.0@aar")
 }
