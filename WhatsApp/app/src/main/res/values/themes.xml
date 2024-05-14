@@ -6,5 +6,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="Toolbar" parent="Theme.AppCompat.NoActionBar">
+
+    </style>
+
     <style name="Theme.WhatsApp" parent="Base.Theme.WhatsApp" />
 </resources>

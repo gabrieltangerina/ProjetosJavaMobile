@@ -11,4 +11,10 @@
     <string name="hint_input_nome">Digite seu nome</string>
     <string name="button_cadastrar">Cadastrar</string>
 
+    <!-- Menu principal -->
+    <string name="menu_pesquisar">Pesquisar</string>
+    <string name="menu_configuracoes">Configurações</string>
+    <string name="menu_sair">Sair</string>
+
+
 </resources>
