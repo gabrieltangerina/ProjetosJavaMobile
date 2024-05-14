@@ -34,6 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_input_email"
@@ -55,6 +56,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editSenha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_input_password"
@@ -68,6 +70,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginEnd="32dp"
         android:background="@color/colorPrimaryDark"
+        android:onClick="logarUsuario"
         android:text="@string/button_login"
         android:textColor="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/textCadastrar"
@@ -81,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:onClick="textCadastrar"
+        android:onClick="abrirTelaCadastro"
         android:text="@string/nao_tem_conta"
         android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
