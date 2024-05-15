@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.example.whatsapp.R;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
+import com.example.whatsapp.helper.Base64Custom;
 import com.example.whatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -65,7 +66,16 @@ public class CadastroActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
+                    try{
+                        String idUsuario = Base64Custom.codificarBase64(usuario.getEmail());
+                        usuario.setId(idUsuario);
+                        usuario.salvar();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
                     Toast.makeText(CadastroActivity.this, "Usuário cadastrado com sucesso", Toast.LENGTH_SHORT).show();
+                    finish();
                 }else{
                     String excesao = "";
 
@@ -81,6 +91,8 @@ public class CadastroActivity extends AppCompatActivity {
                         excesao = "Erro ao cadastrar conta " + e.getMessage();
                         e.printStackTrace();
                     }
+
+                    Toast.makeText(CadastroActivity.this, excesao, Toast.LENGTH_SHORT).show();
                 }
             }
         });
