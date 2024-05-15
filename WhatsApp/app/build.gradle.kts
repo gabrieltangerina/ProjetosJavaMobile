@@ -59,4 +59,7 @@ dependencies {
     // Config. SmartTabLayout
     implementation("com.ogaclejapan.smarttablayout:utils-v4:2.0.0@aar")
     implementation("com.ogaclejapan.smarttablayout:library:2.0.0@aar")
+
+    // Config. CircleImageView (Imagens circulares)
+    implementation("de.hdodenhof:circleimageview:3.1.0")
 }
