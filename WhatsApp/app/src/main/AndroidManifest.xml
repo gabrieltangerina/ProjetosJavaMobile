@@ -2,12 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Solicitando permissão de uso da galeria -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!-- Recursos necessários para que o app funcione corretamente -->
+    <uses-feature android:name="android.hardware.camera" android:required="true" />
 
-    <!-- Solicitando permissão de uso da camera -->
-<!--    <uses-feature android:name="android.hardware.camera" android:required="false" />-->
+    <!-- Solicitando permissão de uso da galeria -->
+<!--    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />-->
 <!--    <uses-permission android:name="android.permission.CAMERA" />-->
+<!--    <uses-feature android:name="android.hardware.camera" android:required="false" />-->
+
 
     <application
         android:allowBackup="true"
