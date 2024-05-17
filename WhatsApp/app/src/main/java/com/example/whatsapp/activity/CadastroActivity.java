@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.example.whatsapp.R;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
 import com.example.whatsapp.helper.Base64Custom;
+import com.example.whatsapp.helper.UsuarioFirebase;
 import com.example.whatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -73,6 +74,9 @@ public class CadastroActivity extends AppCompatActivity {
                     }catch (Exception e){
                         e.printStackTrace();
                     }
+
+                    // Atualizando nome no perfil do usuário (Auth)
+                    UsuarioFirebase.atualizarNomeUsuario(usuario.getNome());
 
                     Toast.makeText(CadastroActivity.this, "Usuário cadastrado com sucesso", Toast.LENGTH_SHORT).show();
                     finish();

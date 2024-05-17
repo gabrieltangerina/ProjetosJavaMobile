@@ -62,4 +62,7 @@ dependencies {
 
     // Config. CircleImageView (Imagens circulares)
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    // Config. Glider
+    implementation("com.github.bumptech.glide:glide:4.12.0")
 }

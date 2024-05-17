@@ -18,20 +18,25 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.whatsapp.R;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
 import com.example.whatsapp.helper.Base64Custom;
 import com.example.whatsapp.helper.Permissao;
 import com.example.whatsapp.helper.UsuarioFirebase;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -46,10 +51,12 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
     private static final int SELECAO_CAMERA = 100;
     private static final int SELECAO_GALERIA = 200;
+
     private ImageButton imageButtonCamera, imageButtonGaleria;
     private ImageView fotoPerfil;
     private FloatingActionButton buttonSalvarImagem;
     private ProgressBar progressBar;
+    private EditText editPerfilNome;
 
     private StorageReference storageReference;
     private String idUsuario;
@@ -64,6 +71,25 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         // Permissao.validarPermissoes(permissoesNecessarios, this, 1);
         // alertaValidacaoPermissao();
 
+        fotoPerfil = findViewById(R.id.fotoPerfil);
+        editPerfilNome = findViewById(R.id.editPerfilNome);
+
+        // Recuperando dados do usuário (nome e foto de perfil)
+        FirebaseUser usuario = UsuarioFirebase.getUsuarioAtual();
+        Uri url = usuario.getPhotoUrl();
+
+        // Recuperando foto de perfil do usuario ao iniciar activity
+        if(url != null){
+            Glide.with(ConfiguracoesActivity.this)
+                    .load(url)
+                    .into(fotoPerfil);
+        }else{
+            fotoPerfil.setImageResource(R.drawable.padrao);
+        }
+
+        // Recuperando nome do usuário
+        editPerfilNome.setText(usuario.getDisplayName());
+
         // Config. Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Configurações");
@@ -73,7 +99,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         // Config. Icones Foto Perfil
         imageButtonCamera = findViewById(R.id.imageButtonCamera);
         imageButtonGaleria = findViewById(R.id.imageButtonGaleria);
-        fotoPerfil = findViewById(R.id.fotoPerfil);
 
         imageButtonCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,7 +132,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         });
 
         progressBar = findViewById(R.id.progressBar);
-
     }
 
     private void salvarImagemPerfil(View v){
@@ -117,7 +141,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         byte[] dadosImagem = baos.toByteArray();
 
         // Salvando imagem no Firebase
-        StorageReference imagemRef = storageReference
+        final StorageReference imagemRef = storageReference
                 .child("imagens")
                 .child("perfil")
                 // .child(idUsuario)
@@ -136,8 +160,23 @@ public class ConfiguracoesActivity extends AppCompatActivity {
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(ConfiguracoesActivity.this, "Sucesso ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
                 progressBar.setVisibility(View.GONE);
+
+                // Adicionando a imagem para o storage do usuário para conseguir acessar com .getPhotoUrl()
+                imagemRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Uri> task) {
+                        Uri url = task.getResult();
+
+                        // Atualizando foto no perfil do usuário (Auth)
+                        atualizaFotoUsuario(url);
+                    }
+                });
             }
         });
+    }
+
+    public void atualizaFotoUsuario(Uri url){
+        UsuarioFirebase.atualizarFotoUsuario(url);
     }
 
     // Método para coletar retorno da ActivityForResult
