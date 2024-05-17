@@ -49,6 +49,16 @@ public class UsuarioFirebase {
         }
     }
 
+    public static String getNomeUsuario() {
+        FirebaseUser user = getUsuarioAtual();
+        if (user != null) {
+            return user.getDisplayName();
+        } else {
+            Log.d("Perfil", "Usuário não está logado");
+            return null;
+        }
+    }
+
     public static boolean atualizarNomeUsuario(String nome){
         try{
             FirebaseUser user = getUsuarioAtual();
