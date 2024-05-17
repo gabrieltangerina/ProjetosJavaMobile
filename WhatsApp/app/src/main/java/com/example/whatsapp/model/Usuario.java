@@ -1,14 +1,42 @@
 package com.example.whatsapp.model;
 
 import com.example.whatsapp.config.ConfiguracaoFirebase;
+import com.example.whatsapp.helper.UsuarioFirebase;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Exclude;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Usuario {
     private String nome;
     private String email;
     private String senha;
     private String id;
+    private String foto;
+
+    public void atualizar(){
+        String idUsuario = UsuarioFirebase.getIdUser();
+        DatabaseReference database = ConfiguracaoFirebase.getFirebaseDatabase();
+
+        DatabaseReference usuariosRef = database.child("usuarios").child(idUsuario);
+
+        // Pega os dados do usuario e converte para Map pois updateChildren aceita apenas Map
+        Map<String, Object> valoresUsuario = converterUsuarioParaMap();
+
+        usuariosRef.updateChildren(valoresUsuario);
+    }
+
+    @Exclude
+    public Map<String, Object> converterUsuarioParaMap(){
+        HashMap<String, Object> usuarioMap = new HashMap<>();
+        usuarioMap.put("email", getEmail());
+        usuarioMap.put("nome", getNome());
+        usuarioMap.put("foto", getFoto());
+
+        return usuarioMap;
+    }
 
     public void salvar(){
         DatabaseReference firebaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
@@ -29,6 +57,14 @@ public class Usuario {
     }
 
     public Usuario() {
+    }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
     }
 
     @Exclude

@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.whatsapp.config.ConfiguracaoFirebase;
+import com.example.whatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +37,11 @@ public class UsuarioFirebase {
             user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    if(!task.isSuccessful()){
+                    if(task.isSuccessful()){
+                        // Atualizar o atributo "foto" do usuário após o perfil ter sido atualizado com sucesso
+                        Usuario usuario = getDadosUsuarioLogado();
+                        usuario.atualizar();
+                    } else {
                         Log.d("Perfil", "Erro ao atualizar foto de perfil");
                     }
                 }
@@ -46,16 +51,6 @@ public class UsuarioFirebase {
         }catch (Exception e){
             e.printStackTrace();
             return false;
-        }
-    }
-
-    public static String getNomeUsuario() {
-        FirebaseUser user = getUsuarioAtual();
-        if (user != null) {
-            return user.getDisplayName();
-        } else {
-            Log.d("Perfil", "Usuário não está logado");
-            return null;
         }
     }
 
@@ -79,6 +74,23 @@ public class UsuarioFirebase {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static Usuario getDadosUsuarioLogado(){
+        FirebaseUser firebaseUser = getUsuarioAtual();
+
+        Usuario usuario = new Usuario();
+        usuario.setEmail(firebaseUser.getEmail());
+        usuario.setNome(firebaseUser.getDisplayName());
+
+        if(firebaseUser.getPhotoUrl() == null){
+            usuario.setFoto("");
+        }else{
+            // Pega o caminho da foto
+            usuario.setFoto(firebaseUser.getPhotoUrl().toString());
+        }
+
+        return usuario;
     }
 
 }

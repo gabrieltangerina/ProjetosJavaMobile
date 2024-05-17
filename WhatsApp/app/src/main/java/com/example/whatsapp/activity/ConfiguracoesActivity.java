@@ -31,6 +31,7 @@ import com.example.whatsapp.config.ConfiguracaoFirebase;
 import com.example.whatsapp.helper.Base64Custom;
 import com.example.whatsapp.helper.Permissao;
 import com.example.whatsapp.helper.UsuarioFirebase;
+import com.example.whatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,12 +59,13 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private FloatingActionButton buttonSalvarImagem;
     private ProgressBar progressBar;
     private EditText editPerfilNome;
+    private String valorEditPerfil;
 
     private StorageReference storageReference;
     private String idUsuario;
     private Bitmap imagem;
     private FirebaseUser usuario;
-    private Uri urlImagemAtual;
+    private Usuario usuarioLogado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,9 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         fotoPerfil = findViewById(R.id.fotoPerfil);
         editPerfilNome = findViewById(R.id.editPerfilNome);
 
+        // Recuperando dados do usuário logado
+        usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
+
         // Recuperando dados do usuário (nome e foto de perfil)
         usuario = UsuarioFirebase.getUsuarioAtual();
         Uri url = usuario.getPhotoUrl();
@@ -86,8 +91,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
             Glide.with(ConfiguracoesActivity.this)
                     .load(url)
                     .into(fotoPerfil);
-
-            urlImagemAtual = url;
         }else{
             fotoPerfil.setImageResource(R.drawable.padrao);
         }
@@ -146,6 +149,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         * o nome e a imagem
         */
 
+        valorEditPerfil = editPerfilNome.getText().toString();
+
         if(imagem != null){
             progressBar.setVisibility(View.VISIBLE);
             // Recuperando dados da imagem para o Firebase
@@ -166,60 +171,54 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 public void onFailure(@NonNull Exception e) {
                     Toast.makeText(ConfiguracoesActivity.this, "Erro ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
+                    return;
                 }
             }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    if(!editPerfilNome.getText().toString().isEmpty()){
-                        // Salvando nome no Firebase
-                        if (!String.valueOf(editPerfilNome.getText()).isEmpty()) {
-                            // Salvando nome no Firebase (Auth)
-                            progressBar.setVisibility(View.VISIBLE);
-                            boolean nomeAtualizadoComSucesso = UsuarioFirebase.atualizarNomeUsuario(String.valueOf(editPerfilNome.getText()));
-                            if (nomeAtualizadoComSucesso) {
-
-                            } else {
-                                Toast.makeText(ConfiguracoesActivity.this, "Falha ao atualizar o nome", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    }else{
-                        Toast.makeText(ConfiguracoesActivity.this, "Nome inválido", Toast.LENGTH_SHORT).show();
-                    }
-
-                    Toast.makeText(ConfiguracoesActivity.this, "Dados atualizados com sucesso", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
 
                     // Adicionando a imagem para o storage do usuário para conseguir acessar com .getPhotoUrl()
                     imagemRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             Uri url = task.getResult();
-
+                            Toast.makeText(ConfiguracoesActivity.this, "Passou por aqui: " + url, Toast.LENGTH_SHORT).show();
                             // Atualizando foto no perfil do usuário (Auth)
                             atualizaFotoUsuario(url);
+
+                            if(!valorEditPerfil.isEmpty()) {
+                                // Salvando nome no Firebase (Auth)
+                                boolean nomeAtualizadoComSucesso = UsuarioFirebase.atualizarNomeUsuario(String.valueOf(editPerfilNome.getText()));
+                                if (nomeAtualizadoComSucesso) {
+                                    // Aqui está atualizando o nome no Datababe, antes estava salvo no Auth
+                                    usuarioLogado.setNome(valorEditPerfil);
+                                    usuarioLogado.atualizar();
+                                } else {
+                                    Toast.makeText(ConfiguracoesActivity.this, "Falha ao atualizar o nome", Toast.LENGTH_SHORT).show();
+                                    progressBar.setVisibility(View.GONE);
+                                }
+
+                                return;
+                            }
                         }
                     });
+
+                    progressBar.setVisibility(View.GONE);
+                    Toast.makeText(ConfiguracoesActivity.this, "Dados atualizados com sucesso", Toast.LENGTH_SHORT).show();
                 }
             });
-        }else if(!editPerfilNome.getText().toString().isEmpty()){
-            // Salvando nome no Firebase
-            if (!String.valueOf(editPerfilNome.getText()).isEmpty()) {
-                // Salvando nome no Firebase (Auth)
-                progressBar.setVisibility(View.VISIBLE);
-                boolean nomeAtualizadoComSucesso = UsuarioFirebase.atualizarNomeUsuario(String.valueOf(editPerfilNome.getText()));
-                if (nomeAtualizadoComSucesso) {
-                    Toast.makeText(ConfiguracoesActivity.this, "Nome atualizado com sucesso", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(ConfiguracoesActivity.this, "Falha ao atualizar o nome", Toast.LENGTH_SHORT).show();
-                }
-                progressBar.setVisibility(View.GONE);
+        }else if(!valorEditPerfil.isEmpty()){
+            // Salvando nome no Firebase (Auth)
+            boolean nomeAtualizadoComSucesso = UsuarioFirebase.atualizarNomeUsuario(String.valueOf(editPerfilNome.getText()));
+            if (nomeAtualizadoComSucesso) {
+                // Aqui está atualizando o nome no Datababe, antes estava salvo no Auth
+                usuarioLogado.setNome(valorEditPerfil);
+                usuarioLogado.atualizar();
+                Toast.makeText(this, "Nome atualizado", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ConfiguracoesActivity.this, "Falha ao atualizar o nome", Toast.LENGTH_SHORT).show();
             }
-        }else{
-            Toast.makeText(ConfiguracoesActivity.this, "Nome inválido", Toast.LENGTH_SHORT).show();
-            progressBar.setVisibility(View.GONE);
         }
-
     }
 
     public void atualizaFotoUsuario(Uri url){
