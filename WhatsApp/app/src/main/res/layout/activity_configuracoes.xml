@@ -51,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fabSalvar"
+        android:id="@+id/buttonSalvarImagem"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -86,6 +86,17 @@
         app:layout_constraintTop_toTopOf="@+id/fotoPerfil"
         app:layout_constraintVertical_bias="1.0"
         app:srcCompat="@drawable/ic_camera_cinza" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSalvarImagem"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

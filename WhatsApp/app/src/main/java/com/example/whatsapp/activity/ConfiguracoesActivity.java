@@ -20,10 +20,22 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.whatsapp.R;
+import com.example.whatsapp.config.ConfiguracaoFirebase;
+import com.example.whatsapp.helper.Base64Custom;
 import com.example.whatsapp.helper.Permissao;
+import com.example.whatsapp.helper.UsuarioFirebase;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 public class ConfiguracoesActivity extends AppCompatActivity {
 
@@ -34,9 +46,14 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
     private static final int SELECAO_CAMERA = 100;
     private static final int SELECAO_GALERIA = 200;
-
     private ImageButton imageButtonCamera, imageButtonGaleria;
     private ImageView fotoPerfil;
+    private FloatingActionButton buttonSalvarImagem;
+    private ProgressBar progressBar;
+
+    private StorageReference storageReference;
+    private String idUsuario;
+    private Bitmap imagem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +88,54 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
             }
         });
-
         imageButtonGaleria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, SELECAO_GALERIA);
+            }
+        });
+
+        storageReference = ConfiguracaoFirebase.getFirebaseStorage();
+        idUsuario = UsuarioFirebase.getIdUser();
+        buttonSalvarImagem = findViewById(R.id.buttonSalvarImagem);
+        buttonSalvarImagem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                salvarImagemPerfil(v);
+            }
+        });
+
+        progressBar = findViewById(R.id.progressBar);
+
+    }
+
+    private void salvarImagemPerfil(View v){
+        // Recuperando dados da imagem para o Firebase
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+        byte[] dadosImagem = baos.toByteArray();
+
+        // Salvando imagem no Firebase
+        StorageReference imagemRef = storageReference
+                .child("imagens")
+                .child("perfil")
+                // .child(idUsuario)
+                .child(idUsuario + ".jpeg");
+
+        UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
+        progressBar.setVisibility(View.VISIBLE);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ConfiguracoesActivity.this, "Erro ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(ConfiguracoesActivity.this, "Sucesso ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
     }
@@ -87,8 +146,6 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK){
-            Bitmap imagem = null;
-
             try{
 
                 if(requestCode == SELECAO_CAMERA){
