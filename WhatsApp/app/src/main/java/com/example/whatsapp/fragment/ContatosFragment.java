@@ -1,5 +1,6 @@
 package com.example.whatsapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,10 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.whatsapp.R;
+import com.example.whatsapp.activity.ChatActivity;
 import com.example.whatsapp.adapter.ContatosAdapter;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
+import com.example.whatsapp.helper.RecyclerItemClickListener;
 import com.example.whatsapp.helper.UsuarioFirebase;
 import com.example.whatsapp.model.Usuario;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,15 +48,37 @@ public class ContatosFragment extends Fragment {
         recyclerViewListaContatos = view.findViewById(R.id.recyclerViewListaContatos);
         usuarioRef = ConfiguracaoFirebase.getFirebaseDatabase().child("usuarios");
 
-        // Configurando Adapter
+        // Config. Adapter
         adapter = new ContatosAdapter(listaContatos, getActivity());
 
 
-        // Configurando RecyclerView
+        // Config. RecyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerViewListaContatos.setLayoutManager(layoutManager);
         recyclerViewListaContatos.setHasFixedSize(true);
         recyclerViewListaContatos.setAdapter(adapter);
+
+        // Config. evento de click no RecyclerView
+        recyclerViewListaContatos.addOnItemTouchListener(new RecyclerItemClickListener(
+                getActivity(),
+                recyclerViewListaContatos,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        startActivity(new Intent(getActivity(), ChatActivity.class));
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+        ));
 
         usuarioAtual = UsuarioFirebase.getUsuarioAtual();
 

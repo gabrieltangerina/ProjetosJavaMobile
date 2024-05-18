@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
     <!-- Recursos necessários para que o app funcione corretamente -->
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
-
-    <!-- Solicitando permissão de uso da galeria -->
-<!--    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />-->
-<!--    <uses-permission android:name="android.permission.CAMERA" />-->
-<!--    <uses-feature android:name="android.hardware.camera" android:required="false" />-->
-
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
 
     <application
         android:allowBackup="true"
@@ -22,12 +17,19 @@
         android:theme="@style/Theme.WhatsApp"
         tools:targetApi="31">
         <activity
-            android:name=".activity.ConfiguracoesActivity"
+            android:name=".activity.ChatActivity"
+            android:exported="false"
+            android:label="@string/title_activity_chat"
             android:parentActivityName=".activity.MainActivity"
-            android:exported="false" />
+            android:theme="@style/Theme.WhatsApp" />
+        <activity
+            android:name=".activity.ConfiguracoesActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.MainActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:theme="@style/Base.Theme.WhatsApp"/>
         <activity
             android:name=".activity.CadastroActivity"
             android:exported="false" />
