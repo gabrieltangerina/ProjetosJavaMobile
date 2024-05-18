@@ -56,15 +56,13 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
     private ImageButton imageButtonCamera, imageButtonGaleria;
     private ImageView fotoPerfil;
-    private FloatingActionButton buttonSalvarImagem;
+    private FloatingActionButton buttonSalvarNome;
     private ProgressBar progressBar;
     private EditText editPerfilNome;
-    private String valorEditPerfil;
 
     private StorageReference storageReference;
     private String idUsuario;
     private Bitmap imagem;
-    private FirebaseUser usuario;
     private Usuario usuarioLogado;
 
     @Override
@@ -79,15 +77,24 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         fotoPerfil = findViewById(R.id.fotoPerfil);
         editPerfilNome = findViewById(R.id.editPerfilNome);
 
+        buttonSalvarNome = findViewById(R.id.buttonSalvarNome);
+        buttonSalvarNome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                salvarNome(v);
+            }
+        });
+
         // Recuperando dados do usuário logado
         usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
 
         // Recuperando dados do usuário (nome e foto de perfil)
-        usuario = UsuarioFirebase.getUsuarioAtual();
+        FirebaseUser usuario = UsuarioFirebase.getUsuarioAtual();
         Uri url = usuario.getPhotoUrl();
 
         // Recuperando foto de perfil do usuario ao iniciar activity
         if(url != null){
+            // Glide - biblioteca do Firebase para exibir a imagem (está nas dependências)
             Glide.with(ConfiguracoesActivity.this)
                     .load(url)
                     .into(fotoPerfil);
@@ -131,108 +138,49 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
         storageReference = ConfiguracaoFirebase.getFirebaseStorage();
         idUsuario = UsuarioFirebase.getIdUser();
-        buttonSalvarImagem = findViewById(R.id.buttonSalvarImagem);
-        buttonSalvarImagem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                salvarDadosPerfil(v);
-            }
-        });
 
         progressBar = findViewById(R.id.progressBar);
     }
 
-    private void salvarDadosPerfil(View v){
-        /*
-        * Esse método atualiza tanto o nome quanto a imagem dependendo da primeira verificação,
-        * se a imagem for nula ele atualiza apenas o nome, se a imagem nao for nula ele atualiza
-        * o nome e a imagem
-        */
+    public void salvarNome(View view){
+        String nome = editPerfilNome.getText().toString();
+        boolean nomeAtualizadoComSucesso = UsuarioFirebase.atualizarNomeUsuario(nome);
 
-        valorEditPerfil = editPerfilNome.getText().toString();
+        if(nomeAtualizadoComSucesso){
 
-        if(imagem != null){
-            progressBar.setVisibility(View.VISIBLE);
-            // Recuperando dados da imagem para o Firebase
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos);
-            byte[] dadosImagem = baos.toByteArray();
+            // Adicionou um novo nome para o usuário e atualizou no Firebase.
+            usuarioLogado.setNome(nome);
+            usuarioLogado.atualizar();
 
-            // Salvando imagem no Firebase
-            final StorageReference imagemRef = storageReference
-                    .child("imagens")
-                    .child("perfil")
-                    // .child(idUsuario)
-                    .child(idUsuario + ".jpeg");
-
-            UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(ConfiguracoesActivity.this, "Erro ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                    return;
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
-                    // Adicionando a imagem para o storage do usuário para conseguir acessar com .getPhotoUrl()
-                    imagemRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Uri> task) {
-                            Uri url = task.getResult();
-                            Toast.makeText(ConfiguracoesActivity.this, "Passou por aqui: " + url, Toast.LENGTH_SHORT).show();
-                            // Atualizando foto no perfil do usuário (Auth)
-                            atualizaFotoUsuario(url);
-
-                            if(!valorEditPerfil.isEmpty()) {
-                                // Salvando nome no Firebase (Auth)
-                                boolean nomeAtualizadoComSucesso = UsuarioFirebase.atualizarNomeUsuario(String.valueOf(editPerfilNome.getText()));
-                                if (nomeAtualizadoComSucesso) {
-                                    // Aqui está atualizando o nome no Datababe, antes estava salvo no Auth
-                                    usuarioLogado.setNome(valorEditPerfil);
-                                    usuarioLogado.atualizar();
-                                } else {
-                                    Toast.makeText(ConfiguracoesActivity.this, "Falha ao atualizar o nome", Toast.LENGTH_SHORT).show();
-                                    progressBar.setVisibility(View.GONE);
-                                }
-
-                                return;
-                            }
-                        }
-                    });
-
-                    progressBar.setVisibility(View.GONE);
-                    Toast.makeText(ConfiguracoesActivity.this, "Dados atualizados com sucesso", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }else if(!valorEditPerfil.isEmpty()){
-            // Salvando nome no Firebase (Auth)
-            boolean nomeAtualizadoComSucesso = UsuarioFirebase.atualizarNomeUsuario(String.valueOf(editPerfilNome.getText()));
-            if (nomeAtualizadoComSucesso) {
-                // Aqui está atualizando o nome no Datababe, antes estava salvo no Auth
-                usuarioLogado.setNome(valorEditPerfil);
-                usuarioLogado.atualizar();
-                Toast.makeText(this, "Nome atualizado", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(ConfiguracoesActivity.this, "Falha ao atualizar o nome", Toast.LENGTH_SHORT).show();
-            }
+            Toast.makeText(this, "Nome alterado com sucesso", Toast.LENGTH_SHORT).show();
+        }else{
+            Toast.makeText(this, "Falha ao alterar nome", Toast.LENGTH_SHORT).show();
         }
     }
 
     public void atualizaFotoUsuario(Uri url){
-        UsuarioFirebase.atualizarFotoUsuario(url);
+        // Salva a foto no usuário do Firebase do usuário
+        boolean fotoAtualizadaComSucesso = UsuarioFirebase.atualizarFotoUsuario(url);
+
+        if(fotoAtualizadaComSucesso){
+            // Salva a foto no Database do usuário
+            usuarioLogado.setFoto(url.toString());
+            usuarioLogado.atualizar();
+            //Toast.makeText(this, "Foto alterada", Toast.LENGTH_SHORT).show();
+        } else{
+            //Toast.makeText(this, "Falha ao alterar foto", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
-    // Método para coletar retorno da ActivityForResult
+    // Método para coletar retorno da ActivityForResult, salva a imagem no Firebase e add url da imagem no perfil do usuario
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(resultCode == RESULT_OK){
             try{
-
+                progressBar.setVisibility(View.VISIBLE);
                 if(requestCode == SELECAO_CAMERA){
                     imagem = (Bitmap) data.getExtras().get("data");
                 }else if (requestCode == SELECAO_GALERIA){
@@ -241,7 +189,47 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                 }
 
                 if(imagem != null){
+
+                    // Ao tirar ou selecionar foto ela será mostrada na foto de perfil
                     fotoPerfil.setImageBitmap(imagem);
+
+                    // Recuperando dados da imagem para o Firebase
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    imagem.compress(Bitmap.CompressFormat.JPEG, 70, baos);
+                    byte[] dadosImagem = baos.toByteArray();
+
+                    // Caminho no Firebase para salvar a imagem
+                    final StorageReference imagemRef = storageReference.child("imagens")
+                            .child("perfil")
+                            .child(idUsuario + ".jpeg");
+
+                    // Salvando imagem no Firebase
+                    UploadTask uploadTask = imagemRef.putBytes(dadosImagem);
+
+                    // Verificando se a imagem foi salva corretamente
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(ConfiguracoesActivity.this, "Falha ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            Toast.makeText(ConfiguracoesActivity.this, "Sucesso ao fazer upload da imagem", Toast.LENGTH_SHORT).show();
+
+                            // Recuperando a url da imagem, para salvar a foto no Usuario do Firebase do usuário
+                            imagemRef.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    Uri url = task.getResult();
+                                    atualizaFotoUsuario(url);
+                                }
+                            });
+
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    });
                 }
 
             }catch (Exception e){

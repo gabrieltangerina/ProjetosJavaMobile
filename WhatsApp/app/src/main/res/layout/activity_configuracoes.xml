@@ -51,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/editPerfilNome" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/buttonSalvarImagem"
+        android:id="@+id/buttonSalvarNome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
@@ -93,7 +93,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/buttonSalvarImagem"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSalvarNome"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />

@@ -63,6 +63,6 @@ dependencies {
     // Config. CircleImageView (Imagens circulares)
     implementation("de.hdodenhof:circleimageview:3.1.0")
 
-    // Config. Glider
+    // Config. Glider (Exibir imagem salva no Firebase)
     implementation("com.github.bumptech.glide:glide:4.12.0")
 }

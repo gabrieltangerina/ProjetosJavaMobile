@@ -17,12 +17,13 @@ public class Usuario {
     private String foto;
 
     public void atualizar(){
+        // Atualiza o nome e a foto no Database
         String idUsuario = UsuarioFirebase.getIdUser();
         DatabaseReference database = ConfiguracaoFirebase.getFirebaseDatabase();
 
         DatabaseReference usuariosRef = database.child("usuarios").child(idUsuario);
 
-        // Pega os dados do usuario e converte para Map pois updateChildren aceita apenas Map
+        // Pega os dados do usuario e converte para Map pois "updateChildren" aceita apenas Map
         Map<String, Object> valoresUsuario = converterUsuarioParaMap();
 
         usuariosRef.updateChildren(valoresUsuario);
@@ -30,6 +31,7 @@ public class Usuario {
 
     @Exclude
     public Map<String, Object> converterUsuarioParaMap(){
+        // Pega o usuário e converte para HashMap
         HashMap<String, Object> usuarioMap = new HashMap<>();
         usuarioMap.put("email", getEmail());
         usuarioMap.put("nome", getNome());

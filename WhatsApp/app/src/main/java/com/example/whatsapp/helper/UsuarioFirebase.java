@@ -24,15 +24,16 @@ public class UsuarioFirebase {
     }
 
     public static FirebaseUser getUsuarioAtual(){
-        FirebaseAuth autenticacao = ConfiguracaoFirebase.getFirebaseAuth();
-        return autenticacao.getCurrentUser();
+        FirebaseAuth usuario = ConfiguracaoFirebase.getFirebaseAuth();
+        return usuario.getCurrentUser();
     }
 
     public static boolean atualizarFotoUsuario(Uri url){
         try{
             FirebaseUser user = getUsuarioAtual();
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                    .setPhotoUri(url).build();
+                    .setPhotoUri(url)
+                    .build();
 
             user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
@@ -58,7 +59,8 @@ public class UsuarioFirebase {
         try{
             FirebaseUser user = getUsuarioAtual();
             UserProfileChangeRequest profile = new UserProfileChangeRequest.Builder()
-                    .setDisplayName(nome).build();
+                    .setDisplayName(nome)
+                    .build();
 
             user.updateProfile(profile).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
