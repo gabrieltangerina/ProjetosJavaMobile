@@ -14,14 +14,13 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.WhatsApp"
+        android:theme="@style/Base.Theme.WhatsApp"
         tools:targetApi="31">
         <activity
             android:name=".activity.ChatActivity"
             android:exported="false"
             android:label="@string/title_activity_chat"
-            android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/Theme.WhatsApp" />
+            android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.ConfiguracoesActivity"
             android:exported="false"

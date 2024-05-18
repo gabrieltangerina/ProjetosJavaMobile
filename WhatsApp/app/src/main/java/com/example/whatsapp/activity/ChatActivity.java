@@ -33,18 +33,10 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         MaterialToolbar toolbar = binding.toolbar;
-        toolbar.setTitle("Conversas");
+        toolbar.setTitle("");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        binding.fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAnchorView(R.id.fab)
-                        .setAction("Action", null).show();
-            }
-        });
     }
 
 }
