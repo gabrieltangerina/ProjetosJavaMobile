@@ -65,7 +65,13 @@ public class ContatosFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        startActivity(new Intent(getActivity(), ChatActivity.class));
+                        Intent intent = new Intent(getActivity(), ChatActivity.class);
+
+                        // Passando o nome e a foto do usuario para adicionar ao activity do chat
+                        Usuario usuarioSelecionado = listaContatos.get(position);
+                        intent.putExtra("chatContato", usuarioSelecionado); // Obs* a classe Usuario precisa estender Serializable para conseguir passar os dados
+
+                        startActivity(intent);
                     }
 
                     @Override
