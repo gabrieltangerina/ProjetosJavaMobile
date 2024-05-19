@@ -116,8 +116,12 @@ public class ChatActivity extends AppCompatActivity {
             Mensagem mensagem = new Mensagem();
             mensagem.setIdRemetente(idUsuarioRemetente);
             mensagem.setMensagem(textoMensagem);
+
+            // Salvando mensagem para o remetente
             salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, mensagem);
-            editMensagem.setText(""); // Limpar o campo de mensagem após enviar
+
+            // Salvando mensagem para o destinatário
+            salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem);
         }
     }
 

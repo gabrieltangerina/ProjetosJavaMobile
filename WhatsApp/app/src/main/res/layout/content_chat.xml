@@ -12,6 +12,7 @@
         android:id="@+id/recyclerMensagens"
         android:layout_width="409dp"
         android:layout_height="0dp"
+        android:layout_marginTop="56dp"
         app:layout_constraintBottom_toTopOf="@+id/fabEnviar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
