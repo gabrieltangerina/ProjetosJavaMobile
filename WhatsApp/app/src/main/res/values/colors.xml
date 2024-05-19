@@ -5,4 +5,6 @@
     <color name="colorPrimary">#075e54</color>
     <color name="colorPrimaryDark">#054d44</color>
     <color name="colorAccent">#25d366</color>
+    <color name="balaoRemetente">#dbf9c4</color>
+    <color name="balaoDestinatario">#c1c1c1</color>
 </resources>

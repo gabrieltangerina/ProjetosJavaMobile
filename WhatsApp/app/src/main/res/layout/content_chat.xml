@@ -9,7 +9,7 @@
     android:background="@drawable/bg_chat">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recyclerMensagens"
         android:layout_width="409dp"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/fabEnviar"
@@ -32,7 +32,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/fabEnviar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerMensagens" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabEnviar"
@@ -56,7 +56,7 @@
         android:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="@+id/editMensagem"
         app:layout_constraintEnd_toEndOf="@+id/editMensagem"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerMensagens"
         app:srcCompat="@drawable/ic_camera_cinza" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
