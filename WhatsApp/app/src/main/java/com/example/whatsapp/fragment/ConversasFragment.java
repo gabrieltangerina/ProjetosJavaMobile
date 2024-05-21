@@ -1,5 +1,6 @@
 package com.example.whatsapp.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,10 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.example.whatsapp.R;
+import com.example.whatsapp.activity.ChatActivity;
 import com.example.whatsapp.adapter.ConversasAdapter;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
+import com.example.whatsapp.helper.RecyclerItemClickListener;
 import com.example.whatsapp.helper.UsuarioFirebase;
 import com.example.whatsapp.model.Conversa;
 import com.google.firebase.database.ChildEventListener;
@@ -54,6 +58,28 @@ public class ConversasFragment extends Fragment {
         recyclerListaConversas.setLayoutManager(layoutManager);
         recyclerListaConversas.setHasFixedSize(true);
         recyclerListaConversas.setAdapter(adapter);
+
+        // Config. Evento de click no RecyclerView
+        recyclerListaConversas.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerListaConversas, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Conversa conversa = listaConversa.get(position);
+
+                Intent i = new Intent(getActivity(), ChatActivity.class);
+                i.putExtra("chatContato", conversa.getUsuarioExibicao());
+                startActivity(i);
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        }));
 
         // Config. Referencias para o Firebase
         String idUsuario = UsuarioFirebase.getIdUser();
