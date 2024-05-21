@@ -2,10 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+<!--    <item android:id="@+id/menu_pesquisa"-->
+<!--        android:title="@string/menu_pesquisar"-->
+<!--        app:showAsAction="always"-->
+<!--        android:icon="@drawable/ic_pesquisa_branco"/>-->
+
     <item android:id="@+id/menu_pesquisa"
         android:title="@string/menu_pesquisar"
-        app:showAsAction="always"
-        android:icon="@drawable/ic_pesquisa_branco"/>
+        android:icon="@drawable/ic_pesquisa_branco"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
     <item android:id="@+id/menu_configuracoes"
         android:title="@string/menu_configuracoes"

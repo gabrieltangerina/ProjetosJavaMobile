@@ -2,6 +2,7 @@ package com.example.whatsapp.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.example.whatsapp.R;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
@@ -23,6 +26,7 @@ import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth autenticacao;
+    private FragmentPagerItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar); // Suporte a versões anteriores do android
 
         // Config. ViewPagerTab
-        FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), FragmentPagerItems.with(this)
+         adapter = new FragmentPagerItemAdapter(getSupportFragmentManager(), FragmentPagerItems.with(this)
                 .add("Conversas", ConversasFragment.class)
                 .add("Contatos", ContatosFragment.class)
                 .create());
@@ -62,7 +66,44 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         // Verifica qual item de menu foi clicado
 
-        if(item.getItemId() == R.id.menu_sair){
+        if(item.getItemId() == R.id.menu_pesquisa){
+            SearchView searchView = (SearchView) item.getActionView();
+            searchView.setQueryHint(getString(R.string.menu_pesquisar));
+
+            // Pare pegar todas as conversas ao fechar o searchView, no caso ao foco mudar do searchView
+            searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    ConversasFragment fragment = (ConversasFragment) adapter.getPage(0);
+                    // Recarrega todas as conversas ao fechar o searchView
+                    fragment.recarregarConversas();
+                }
+            });
+
+            // Lista para filtrar texto do searchView
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    ConversasFragment fragment = (ConversasFragment) adapter.getPage(0);
+
+                    if(newText != null && !newText.isEmpty()){
+                        fragment.pesquisarConversas(newText.toLowerCase());
+                    }
+
+                    if(newText.isEmpty()){
+                        fragment.recarregarConversas();
+                    }
+
+                    return false;
+                }
+            });
+
+        }else if(item.getItemId() == R.id.menu_sair){
             deslogarUsuario();
             finish();
         }else if(item.getItemId() == R.id.menu_configuracoes){

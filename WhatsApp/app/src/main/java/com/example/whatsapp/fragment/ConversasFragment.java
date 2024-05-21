@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +88,29 @@ public class ConversasFragment extends Fragment {
         conversasRef = database.child("conversas").child(idUsuario);
 
         return view;
+    }
+
+    public void recarregarConversas(){
+        adapter = new ConversasAdapter(listaConversa, getActivity());
+        recyclerListaConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void pesquisarConversas(String texto){
+        List<Conversa> listaConversasBusca = new ArrayList<>();
+
+        for(Conversa conversa: listaConversa){
+            String nome = conversa.getUsuarioExibicao().getNome().toLowerCase();
+            String ultumaMsg = conversa.getUltimaMensagem().toLowerCase();
+
+            if(nome.contains(texto) || ultumaMsg.contains(texto)){
+                listaConversasBusca.add(conversa);
+            }
+        }
+
+        adapter = new ConversasAdapter(listaConversasBusca, getActivity());
+        recyclerListaConversas.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override

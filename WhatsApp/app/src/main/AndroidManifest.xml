@@ -29,7 +29,13 @@
         <activity
             android:name=".activity.MainActivity"
             android:exported="false"
-            android:theme="@style/Base.Theme.WhatsApp"/>
+            android:theme="@style/Base.Theme.WhatsApp">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".activity.CadastroActivity"
             android:exported="false" />
