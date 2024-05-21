@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.WindowCompat;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -28,6 +26,7 @@ import com.example.whatsapp.config.ConfiguracaoFirebase;
 import com.example.whatsapp.databinding.ActivityChatBinding;
 import com.example.whatsapp.helper.Base64Custom;
 import com.example.whatsapp.helper.UsuarioFirebase;
+import com.example.whatsapp.model.Conversa;
 import com.example.whatsapp.model.Mensagem;
 import com.example.whatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -215,6 +214,17 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
+    private void salvarConversa(Mensagem mensagem){
+        Conversa conversaRemetente = new Conversa();
+        conversaRemetente.setIdRemetente(idUsuarioRemetente);
+        conversaRemetente.setIdDestinatario(idUsuarioDestinatario);
+        conversaRemetente.setUltimaMensagem(mensagem.getMensagem());
+        conversaRemetente.setUsuarioExibicao(usuarioDestino);
+
+        conversaRemetente.salvar();
+        Toast.makeText(this, "Salvo com sucesso", Toast.LENGTH_SHORT).show();
+    }
+
     public void enviarMensagem(View view) {
         String textoMensagem = editMensagem.getText().toString();
         if (!textoMensagem.isEmpty()) {
@@ -227,6 +237,9 @@ public class ChatActivity extends AppCompatActivity {
 
             // Salvando mensagem para o destinatário
             salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem);
+
+            // Salvando conversa (para aparecer no fragment de conversas)
+            salvarConversa(mensagem);
         }
     }
 
