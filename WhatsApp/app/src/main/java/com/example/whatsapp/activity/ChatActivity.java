@@ -222,7 +222,6 @@ public class ChatActivity extends AppCompatActivity {
         conversaRemetente.setUsuarioExibicao(usuarioDestino);
 
         conversaRemetente.salvar();
-        Toast.makeText(this, "Salvo com sucesso", Toast.LENGTH_SHORT).show();
     }
 
     public void enviarMensagem(View view) {
