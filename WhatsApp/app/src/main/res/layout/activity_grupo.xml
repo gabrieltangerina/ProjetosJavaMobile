@@ -35,19 +35,19 @@
             android:id="@+id/recyclerMembros"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical"/>
+            android:scrollbars="vertical" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/fabAvancarCadastro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/colorPrimary"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_confirmar_branco"
-        android:backgroundTint="@color/colorPrimary"/>
+        app:srcCompat="@drawable/ic_seta_proximo_branca" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
