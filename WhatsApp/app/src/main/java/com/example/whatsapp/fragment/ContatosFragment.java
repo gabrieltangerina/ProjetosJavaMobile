@@ -58,6 +58,8 @@ public class ContatosFragment extends Fragment {
         recyclerViewListaContatos.setHasFixedSize(true);
         recyclerViewListaContatos.setAdapter(adapter);
 
+        usuarioAtual = UsuarioFirebase.getUsuarioAtual();
+
         // Config. evento de click no RecyclerView
         recyclerViewListaContatos.addOnItemTouchListener(new RecyclerItemClickListener(
                 getActivity(),
@@ -65,13 +67,18 @@ public class ContatosFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(getActivity(), ChatActivity.class);
-
-                        // Passando o nome e a foto do usuario para adicionar ao activity do chat
                         Usuario usuarioSelecionado = listaContatos.get(position);
-                        intent.putExtra("chatContato", usuarioSelecionado); // Obs* a classe Usuario precisa estender Serializable para conseguir passar os dados
+                        boolean cabecalho = usuarioSelecionado.getEmail().isEmpty();
 
-                        startActivity(intent);
+                        if(cabecalho){
+                            
+                        }else{
+                            // Passando o nome e a foto do usuario para adicionar ao activity do chat
+                            Intent intent = new Intent(getActivity(), ChatActivity.class);
+                            intent.putExtra("chatContato", usuarioSelecionado); // Obs* a classe Usuario precisa estender Serializable para conseguir passar os dados
+                            startActivity(intent);
+                        }
+
                     }
 
                     @Override
@@ -86,7 +93,11 @@ public class ContatosFragment extends Fragment {
                 }
         ));
 
-        usuarioAtual = UsuarioFirebase.getUsuarioAtual();
+        // Criando o botão para criar um grupo
+        Usuario itemGrupo = new Usuario();
+        itemGrupo.setNome("Novo Grupo");
+        itemGrupo.setEmail("");
+        listaContatos.add(itemGrupo);
 
         return view;
     }
