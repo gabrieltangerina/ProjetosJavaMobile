@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 
 import com.example.whatsapp.R;
 import com.example.whatsapp.activity.ChatActivity;
+import com.example.whatsapp.activity.GrupoActivity;
 import com.example.whatsapp.adapter.ContatosAdapter;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
 import com.example.whatsapp.helper.RecyclerItemClickListener;
@@ -71,7 +72,8 @@ public class ContatosFragment extends Fragment {
                         boolean cabecalho = usuarioSelecionado.getEmail().isEmpty();
 
                         if(cabecalho){
-                            
+                            Intent intent = new Intent(getActivity(), GrupoActivity.class);
+                            startActivity(intent);
                         }else{
                             // Passando o nome e a foto do usuario para adicionar ao activity do chat
                             Intent intent = new Intent(getActivity(), ChatActivity.class);
