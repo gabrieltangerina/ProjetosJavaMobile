@@ -8,11 +8,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.whatsapp.R;
+import com.example.whatsapp.adapter.ContatoGrupoAdapter;
 import com.example.whatsapp.adapter.ContatosAdapter;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
+import com.example.whatsapp.helper.RecyclerItemClickListener;
 import com.example.whatsapp.helper.UsuarioFirebase;
 import com.example.whatsapp.model.Usuario;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,7 +32,9 @@ public class GrupoActivity extends AppCompatActivity {
     private FloatingActionButton fab;
     private RecyclerView recyclerMembrosSelecionados, recyclerMembros;
     private ContatosAdapter contatosAdapter;
+    private ContatoGrupoAdapter contatosGrupoAdapter;
     private List<Usuario> listaMembros = new ArrayList<>();
+    private List<Usuario> listaMembrosSelecionados = new ArrayList<>();
     private ValueEventListener valueEventListenerMembros;
     private DatabaseReference usuarioRef;
     private FirebaseUser usuarioAtual;
@@ -58,19 +63,61 @@ public class GrupoActivity extends AppCompatActivity {
         recyclerMembrosSelecionados = findViewById(R.id.recyclerMembrosSelecionados);
         recyclerMembros = findViewById(R.id.recyclerMembros);
 
-        // Config. Adapter
+        // Config. Adapter (membros)
         contatosAdapter = new ContatosAdapter(listaMembros, getApplicationContext());
 
-        // Config. RecyclerView
+        // Config. RecyclerView para membros
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerMembros.setLayoutManager(layoutManager);
         recyclerMembros.setHasFixedSize(true);
         recyclerMembros.setAdapter(contatosAdapter);
 
+        // Config. Adapter (membros selecionados)
+        contatosGrupoAdapter = new ContatoGrupoAdapter(listaMembrosSelecionados, getApplicationContext());
+
+        // Config. RecyclerView para membros selecionados
+        RecyclerView.LayoutManager layoutManagerMembrosSelecionados = new LinearLayoutManager(
+                getApplicationContext(),
+                LinearLayoutManager.HORIZONTAL,
+                false
+        );
+        recyclerMembrosSelecionados.setLayoutManager(layoutManagerMembrosSelecionados);
+        recyclerMembrosSelecionados.setHasFixedSize(true);
+        recyclerMembrosSelecionados.setAdapter(contatosGrupoAdapter);
+
+
+
         // Config. Referencia Database
         usuarioRef = ConfiguracaoFirebase.getFirebaseDatabase().child("usuarios");
 
+        // Pegando Usuario Atual
         usuarioAtual = UsuarioFirebase.getUsuarioAtual();
+
+        // Config. Evento de click no RecyclerView
+        recyclerMembros.addOnItemTouchListener(new RecyclerItemClickListener(getApplicationContext(), recyclerMembros, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Usuario usuarioSelecionado = listaMembros.get(position);
+
+                // Removendo usuário da lista antiga
+                listaMembros.remove(usuarioSelecionado);
+                contatosAdapter.notifyDataSetChanged();
+
+                // Adicionando usuário na lista de selecionados
+                listaMembrosSelecionados.add(usuarioSelecionado);
+                contatosGrupoAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onLongItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            }
+        }));
     }
 
     public void recuperarContatos(){
