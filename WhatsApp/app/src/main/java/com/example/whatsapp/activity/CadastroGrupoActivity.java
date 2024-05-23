@@ -107,6 +107,11 @@ public class CadastroGrupoActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String nomeGrupo = editNomeGrupo.getText().toString();
+                
+                if(nomeGrupo.trim().isEmpty()){
+                    Toast.makeText(CadastroGrupoActivity.this, "Informe um nome para o grupo", Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 // Adiciona o usuário que está criando o grupo a lista de membros do grupo
                 listaMembrosSelecionados.add(UsuarioFirebase.getDadosUsuarioLogado());

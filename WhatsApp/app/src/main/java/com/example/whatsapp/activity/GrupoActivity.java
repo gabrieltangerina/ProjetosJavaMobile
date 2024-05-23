@@ -59,6 +59,12 @@ public class GrupoActivity extends AppCompatActivity {
         fabAvancarCadastro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                if(listaMembrosSelecionados.isEmpty()){
+                    Toast.makeText(GrupoActivity.this, "É necessário que o grupo tenha ao menos menos 2 participantes", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 Intent i = new Intent(GrupoActivity.this, CadastroGrupoActivity.class);
                 i.putExtra("membros", (Serializable) listaMembrosSelecionados); // Tem que converter para Serializable
                 startActivity(i);
