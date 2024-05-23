@@ -62,6 +62,7 @@ public class ChatActivity extends AppCompatActivity {
     private DatabaseReference database;
     private StorageReference storage;
     private Grupo grupo;
+    private Usuario usuarioRemetente;
 
     private CircleImageView circleImageViewFotoChat;
     private TextView textViewNomeChat;
@@ -157,6 +158,8 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        usuarioRemetente = UsuarioFirebase.getDadosUsuarioLogado();
+
     }
 
     // Capturnado o resultado do "startActivityForResult(i, SELECAO_CAMERA);"
@@ -232,10 +235,10 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void salvarConversa(Mensagem mensagem, boolean isGroup){
+    private void salvarConversa(String idRemetente, String idDestinaraio, Usuario usuarioExibicao, Mensagem mensagem, boolean isGroup){
         Conversa conversaRemetente = new Conversa();
-        conversaRemetente.setIdRemetente(idUsuarioRemetente);
-        conversaRemetente.setIdDestinatario(idUsuarioDestinatario);
+        conversaRemetente.setIdRemetente(idRemetente);
+        conversaRemetente.setIdDestinatario(idDestinaraio);
         conversaRemetente.setUltimaMensagem(mensagem.getMensagem());
 
         if(isGroup){
@@ -244,7 +247,7 @@ public class ChatActivity extends AppCompatActivity {
             conversaRemetente.setGrupo(grupo);
         }else{
             // Conversa entre duas pessoas
-            conversaRemetente.setUsuarioExibicao(usuarioDestino);
+            conversaRemetente.setUsuarioExibicao(usuarioExibicao);
         }
 
         conversaRemetente.salvar();
@@ -265,8 +268,11 @@ public class ChatActivity extends AppCompatActivity {
                 // Salvando mensagem para o destinatário
                 salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem);
 
-                // Salvando conversa (para aparecer no fragment de conversas)
-                salvarConversa(mensagem, false);
+                // Salvando conversa para o remetente (para aparecer no fragment de conversas)
+                salvarConversa(idUsuarioRemetente, idUsuarioDestinatario, usuarioDestino, mensagem, false);
+
+                // Salvando conversa para o destinatário
+                salvarConversa(idUsuarioRemetente, idUsuarioDestinatario, usuarioRemetente, mensagem, false);
             }else{
 
                 for(Usuario membro: grupo.getMembros()){
@@ -276,12 +282,13 @@ public class ChatActivity extends AppCompatActivity {
                     Mensagem mensagem = new Mensagem();
                     mensagem.setIdRemetente(idUsuarioLogadoGrupo);
                     mensagem.setMensagem(textoMensagem);
+                    mensagem.setNome(usuarioRemetente.getNome());
 
                     // Salvar mensagem
                     salvarMensagem(idRemetenteGrupo, idUsuarioDestinatario, mensagem);
 
                     // Salvar conversa
-                    salvarConversa(mensagem, true);
+                    salvarConversa(idRemetenteGrupo, idUsuarioDestinatario, usuarioDestino, mensagem, true);
                 }
 
             }

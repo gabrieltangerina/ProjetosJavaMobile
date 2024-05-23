@@ -16,6 +16,7 @@ import com.example.whatsapp.R;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
 import com.example.whatsapp.helper.UsuarioFirebase;
 import com.example.whatsapp.model.Mensagem;
+import com.example.whatsapp.model.Usuario;
 
 import java.util.List;
 
@@ -52,6 +53,8 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
         String msg = mensagem.getMensagem();
         String imagem = mensagem.getImagem();
 
+        Usuario usuarioLogado = UsuarioFirebase.getDadosUsuarioLogado();
+
         if(imagem != null){
             Uri url = Uri.parse(imagem);
             Glide.with(context)
@@ -62,6 +65,13 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
         }else{
             holder.mensagem.setText(msg);
             holder.imagem.setVisibility(View.GONE);
+        }
+
+        String nome = mensagem.getNome();
+        if(!nome.isEmpty() && !nome.equals(usuarioLogado.getNome())){
+            holder.nome.setText(nome);
+        }else{
+            holder.nome.setVisibility(View.GONE);
         }
     }
 
@@ -87,12 +97,14 @@ public class MensagensAdapter extends RecyclerView.Adapter<MensagensAdapter.MyVi
     public class MyViewHolder extends RecyclerView.ViewHolder{
         ImageView imagem;
         TextView mensagem;
+        TextView nome;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
 
             mensagem = itemView.findViewById(R.id.textMensagemTexto);
             imagem = itemView.findViewById(R.id.imageMensagemFoto);
+            nome = itemView.findViewById(R.id.textNomeExibicao);
         }
     }
 
