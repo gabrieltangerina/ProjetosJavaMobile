@@ -95,7 +95,7 @@ public class ChatActivity extends AppCompatActivity {
             if(bundle.containsKey("chatGrupo")){
 
                 grupo = (Grupo) bundle.getSerializable("chatGrupo");
-                idUsuarioDestinatario = Base64Custom.codificarBase64(grupo.getId());
+                idUsuarioDestinatario = grupo.getId();
                 textViewNomeChat.setText(grupo.getNome());
 
                 String foto = grupo.getFoto();
@@ -232,12 +232,20 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void salvarConversa(Mensagem mensagem){
+    private void salvarConversa(Mensagem mensagem, boolean isGroup){
         Conversa conversaRemetente = new Conversa();
         conversaRemetente.setIdRemetente(idUsuarioRemetente);
         conversaRemetente.setIdDestinatario(idUsuarioDestinatario);
         conversaRemetente.setUltimaMensagem(mensagem.getMensagem());
-        conversaRemetente.setUsuarioExibicao(usuarioDestino);
+
+        if(isGroup){
+            // Conversa em grupo
+            conversaRemetente.setIsGroup("true");
+            conversaRemetente.setGrupo(grupo);
+        }else{
+            // Conversa entre duas pessoas
+            conversaRemetente.setUsuarioExibicao(usuarioDestino);
+        }
 
         conversaRemetente.salvar();
     }
@@ -245,18 +253,39 @@ public class ChatActivity extends AppCompatActivity {
     public void enviarMensagem(View view) {
         String textoMensagem = editMensagem.getText().toString();
         if (!textoMensagem.isEmpty()) {
-            Mensagem mensagem = new Mensagem();
-            mensagem.setIdRemetente(idUsuarioRemetente);
-            mensagem.setMensagem(textoMensagem);
 
-            // Salvando mensagem para o remetente
-            salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, mensagem);
+            if(usuarioDestino != null){
+                Mensagem mensagem = new Mensagem();
+                mensagem.setIdRemetente(idUsuarioRemetente);
+                mensagem.setMensagem(textoMensagem);
 
-            // Salvando mensagem para o destinatário
-            salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem);
+                // Salvando mensagem para o remetente
+                salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, mensagem);
 
-            // Salvando conversa (para aparecer no fragment de conversas)
-            salvarConversa(mensagem);
+                // Salvando mensagem para o destinatário
+                salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem);
+
+                // Salvando conversa (para aparecer no fragment de conversas)
+                salvarConversa(mensagem, false);
+            }else{
+
+                for(Usuario membro: grupo.getMembros()){
+                    String idRemetenteGrupo = Base64Custom.codificarBase64(membro.getEmail());
+                    String idUsuarioLogadoGrupo = UsuarioFirebase.getIdUser();
+
+                    Mensagem mensagem = new Mensagem();
+                    mensagem.setIdRemetente(idUsuarioLogadoGrupo);
+                    mensagem.setMensagem(textoMensagem);
+
+                    // Salvar mensagem
+                    salvarMensagem(idRemetenteGrupo, idUsuarioDestinatario, mensagem);
+
+                    // Salvar conversa
+                    salvarConversa(mensagem, true);
+                }
+
+            }
+
         }
     }
 

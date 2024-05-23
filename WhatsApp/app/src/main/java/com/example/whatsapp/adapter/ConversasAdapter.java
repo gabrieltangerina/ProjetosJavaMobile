@@ -47,6 +47,7 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
 
             Grupo grupo = conversa.getGrupo();
             holder.nome.setText(grupo.getNome());
+            holder.ultimaMensagem.setText("");
 
             if(grupo.getFoto() != null){
                 Uri uri = Uri.parse(grupo.getFoto());
@@ -57,15 +58,19 @@ public class ConversasAdapter extends RecyclerView.Adapter<ConversasAdapter.MyVi
 
         }else{
             Usuario usuario = conversa.getUsuarioExibicao();
-            holder.nome.setText(usuario.getNome());
-            holder.ultimaMensagem.setText(conversa.getUltimaMensagem());
 
-            if(usuario.getFoto() != null){
-                Uri uri = Uri.parse(usuario.getFoto());
-                Glide.with(context).load(uri).into(holder.foto);
-            }else{
-                holder.foto.setImageResource(R.drawable.padrao);
+            if(usuario != null){
+                holder.nome.setText(usuario.getNome());
+                holder.ultimaMensagem.setText(conversa.getUltimaMensagem());
+
+                if(usuario.getFoto() != null){
+                    Uri uri = Uri.parse(usuario.getFoto());
+                    Glide.with(context).load(uri).into(holder.foto);
+                }else{
+                    holder.foto.setImageResource(R.drawable.padrao);
+                }
             }
+
         }
 
     }
