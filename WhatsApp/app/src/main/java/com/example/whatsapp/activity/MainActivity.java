@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth autenticacao;
     private FragmentPagerItemAdapter adapter;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
                 .add("Contatos", ContatosFragment.class)
                 .create());
 
-        ViewPager viewPager = findViewById(R.id.viewPager);
-        viewPager.setAdapter(adapter);
+         viewPager = findViewById(R.id.viewPager);
+         viewPager.setAdapter(adapter);
 
         SmartTabLayout viewPagerTag = findViewById(R.id.viewPagerTab);
         viewPagerTag.setViewPager(viewPager);
@@ -89,14 +90,26 @@ public class MainActivity extends AppCompatActivity {
 
                 @Override
                 public boolean onQueryTextChange(String newText) {
-                    ConversasFragment fragment = (ConversasFragment) adapter.getPage(0);
 
-                    if(newText != null && !newText.isEmpty()){
-                        fragment.pesquisarConversas(newText.toLowerCase());
-                    }
+                    // Verificando se a busca está no fragment de conversas ou contatos
+                    if (viewPager.getCurrentItem() == 0) {
 
-                    if(newText.isEmpty()){
-                        fragment.recarregarConversas();
+                        ConversasFragment conversasFragment = (ConversasFragment) adapter.getPage(0);
+                        if (newText != null && !newText.isEmpty()) {
+                            conversasFragment.pesquisarConversas(newText.toLowerCase());
+                        } else {
+                            conversasFragment.recarregarConversas();
+                        }
+
+                    } else if (viewPager.getCurrentItem() == 1) {
+
+                        ContatosFragment contatosFragment = (ContatosFragment) adapter.getPage(1);
+                        if (newText != null && !newText.isEmpty()) {
+                            contatosFragment.pesquisarContatos(newText.toLowerCase());
+                        } else {
+                            contatosFragment.recarregarContatos();
+                        }
+
                     }
 
                     return false;
