@@ -208,18 +208,42 @@ public class ChatActivity extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Uri> task) {
                                     Uri url = task.getResult();
-                                    Mensagem mensagem = new Mensagem();
-                                    mensagem.setIdRemetente(idUsuarioRemetente);
-                                    mensagem.setImagem(url.toString());
 
-                                    // Texto padrão para ser salvo no firebase
-                                    mensagem.setMensagem("imagem.jpeg");
+                                    if(usuarioDestino != null){ // Conversa entre duas pessoas
 
-                                    // Salvando mensagem no Database (para o remetente)
-                                    salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, mensagem);
+                                        Mensagem mensagem = new Mensagem();
+                                        mensagem.setIdRemetente(idUsuarioRemetente);
+                                        mensagem.setImagem(url.toString());
 
-                                    // Salvando mensagem para o destinatário
-                                    salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem);
+                                        // Texto padrão para ser salvo no firebase
+                                        mensagem.setMensagem("imagem.jpeg");
+
+                                        // Salvando mensagem no Database (para o remetente)
+                                        salvarMensagem(idUsuarioRemetente, idUsuarioDestinatario, mensagem);
+
+                                        // Salvando mensagem para o destinatário
+                                        salvarMensagem(idUsuarioDestinatario, idUsuarioRemetente, mensagem);
+
+                                    }else{ // Conversa entre grupos
+
+                                        for(Usuario membro: grupo.getMembros()){
+                                            String idRemetenteGrupo = Base64Custom.codificarBase64(membro.getEmail());
+                                            String idUsuarioLogadoGrupo = UsuarioFirebase.getIdUser();
+
+                                            Mensagem mensagem = new Mensagem();
+                                            mensagem.setIdRemetente(idUsuarioLogadoGrupo);
+                                            mensagem.setMensagem("imagem.jpeg");
+                                            mensagem.setNome(usuarioRemetente.getNome());
+                                            mensagem.setImagem(url.toString());
+
+                                            // Salvar mensagem
+                                            salvarMensagem(idRemetenteGrupo, idUsuarioDestinatario, mensagem);
+
+                                            // Salvar conversa
+                                            salvarConversa(idRemetenteGrupo, idUsuarioDestinatario, usuarioDestino, mensagem, true);
+
+                                        }
+                                    }
 
                                     Toast.makeText(ChatActivity.this, "Sucesso ao enviar imagem", Toast.LENGTH_SHORT).show();
                                 }
