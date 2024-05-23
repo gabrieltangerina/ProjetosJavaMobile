@@ -272,7 +272,7 @@ public class ChatActivity extends AppCompatActivity {
                 salvarConversa(idUsuarioRemetente, idUsuarioDestinatario, usuarioDestino, mensagem, false);
 
                 // Salvando conversa para o destinatário
-                salvarConversa(idUsuarioRemetente, idUsuarioDestinatario, usuarioRemetente, mensagem, false);
+                salvarConversa(idUsuarioDestinatario, idUsuarioRemetente, usuarioRemetente, mensagem, false);
             }else{
 
                 for(Usuario membro: grupo.getMembros()){
