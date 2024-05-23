@@ -13,18 +13,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.whatsapp.R;
 import com.example.whatsapp.adapter.ContatoGrupoAdapter;
 import com.example.whatsapp.config.ConfiguracaoFirebase;
+import com.example.whatsapp.helper.UsuarioFirebase;
 import com.example.whatsapp.model.Grupo;
 import com.example.whatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -46,6 +49,8 @@ public class CadastroGrupoActivity extends AppCompatActivity {
     private RecyclerView recyclerMembrosSelecionados;
     private CircleImageView imageGrupo;
     private TextView textTotalParticipantes;
+    private FloatingActionButton fabSalvarGrupo;
+    private EditText editNomeGrupo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +100,21 @@ public class CadastroGrupoActivity extends AppCompatActivity {
                 startActivityForResult(i, SELECAO_GALERIA);
             }
         });
+
+        editNomeGrupo = findViewById(R.id.editNomeGrupo);
+        fabSalvarGrupo = findViewById(R.id.fabSalvarGrupo);
+        fabSalvarGrupo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String nomeGrupo = editNomeGrupo.getText().toString();
+
+                // Adiciona o usuário que está criando o grupo a lista de membros do grupo
+                listaMembrosSelecionados.add(UsuarioFirebase.getDadosUsuarioLogado());
+                grupo.setMembros(listaMembrosSelecionados);
+                grupo.setNome(nomeGrupo);
+                grupo.salvar();
+            }
+        });
     }
 
     @Override
@@ -140,6 +160,7 @@ public class CadastroGrupoActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Uri> task) {
                                     String url = task.getResult().toString();
                                     grupo.setFoto(url);
+                                    Toast.makeText(CadastroGrupoActivity.this, "Upload da imagem feito com sucesso", Toast.LENGTH_SHORT).show();
                                 }
                             });
 
