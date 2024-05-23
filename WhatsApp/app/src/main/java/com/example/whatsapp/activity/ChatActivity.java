@@ -27,6 +27,7 @@ import com.example.whatsapp.databinding.ActivityChatBinding;
 import com.example.whatsapp.helper.Base64Custom;
 import com.example.whatsapp.helper.UsuarioFirebase;
 import com.example.whatsapp.model.Conversa;
+import com.example.whatsapp.model.Grupo;
 import com.example.whatsapp.model.Mensagem;
 import com.example.whatsapp.model.Usuario;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,6 +61,7 @@ public class ChatActivity extends AppCompatActivity {
     private ChildEventListener childEventListenerMensagens;
     private DatabaseReference database;
     private StorageReference storage;
+    private Grupo grupo;
 
     private CircleImageView circleImageViewFotoChat;
     private TextView textViewNomeChat;
@@ -90,24 +92,40 @@ public class ChatActivity extends AppCompatActivity {
         // Recuperar os dados passados no onClick de ContatosFragment
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            usuarioDestino = (Usuario) bundle.getSerializable("chatContato");
-            textViewNomeChat.setText(usuarioDestino.getNome());
-            String foto = usuarioDestino.getFoto();
-            if (foto != null) {
-                Uri url = Uri.parse(foto);
-                Glide.with(ChatActivity.this)
-                        .load(url)
-                        .into(circleImageViewFotoChat);
-            } else {
-                circleImageViewFotoChat.setImageResource(R.drawable.padrao);
+            if(bundle.containsKey("chatGrupo")){
+
+                grupo = (Grupo) bundle.getSerializable("chatGrupo");
+                idUsuarioDestinatario = Base64Custom.codificarBase64(grupo.getId());
+                textViewNomeChat.setText(grupo.getNome());
+
+                String foto = grupo.getFoto();
+                if(foto != null){
+                    Uri url = Uri.parse(foto);
+                    Glide.with(ChatActivity.this).load(url).into(circleImageViewFotoChat);
+                }else{
+                    circleImageViewFotoChat.setImageResource(R.drawable.padrao);
+                }
+
+            }else{
+                usuarioDestino = (Usuario) bundle.getSerializable("chatContato");
+                textViewNomeChat.setText(usuarioDestino.getNome());
+                String foto = usuarioDestino.getFoto();
+                if (foto != null) {
+                    Uri url = Uri.parse(foto);
+                    Glide.with(ChatActivity.this)
+                            .load(url)
+                            .into(circleImageViewFotoChat);
+                } else {
+                    circleImageViewFotoChat.setImageResource(R.drawable.padrao);
+                }
+
+                // Recupera dados do usuário destinatário
+                idUsuarioDestinatario = Base64Custom.codificarBase64(usuarioDestino.getEmail());
             }
         }
 
         // Recupera dados do usuário remetente
         idUsuarioRemetente = UsuarioFirebase.getIdUser();
-
-        // Recupera dados do usuário destinatário
-        idUsuarioDestinatario = Base64Custom.codificarBase64(usuarioDestino.getEmail());
 
         recyclerMensagens = findViewById(R.id.recyclerMensagens);
 
