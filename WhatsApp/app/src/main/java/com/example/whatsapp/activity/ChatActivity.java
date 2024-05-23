@@ -322,6 +322,10 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void recuperarMensagens(){
+
+        // Resolvendo erro de duplicidade ao clicar no botão do celular de voltar
+        mensagens.clear();
+
         childEventListenerMensagens = mensagensRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

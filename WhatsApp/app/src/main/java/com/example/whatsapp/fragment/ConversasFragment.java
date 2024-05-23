@@ -145,6 +145,10 @@ public class ConversasFragment extends Fragment {
     }
 
     public void recuperarConversas(){
+
+        // Resolvendo erro de duplicidade ao clicar no botão do celular de voltar
+        listaConversa.clear();
+
         childEventListenerConversas = conversasRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

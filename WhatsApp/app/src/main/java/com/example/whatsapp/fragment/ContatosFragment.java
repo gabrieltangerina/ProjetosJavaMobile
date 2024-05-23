@@ -101,11 +101,7 @@ public class ContatosFragment extends Fragment {
                 }
         ));
 
-        // Criando o botão para criar um grupo
-        Usuario itemGrupo = new Usuario();
-        itemGrupo.setNome("Novo Grupo");
-        itemGrupo.setEmail("");
-        listaContatos.add(itemGrupo);
+        adicionarMenuNovoGrupo();
 
         return view;
     }
@@ -126,6 +122,10 @@ public class ContatosFragment extends Fragment {
         eventListener = usuarioRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                // Resolvendo erro de duplicidade ao clicar no botão do celular de voltar
+                limparListaContatos();
+
                 for(DataSnapshot dados: snapshot.getChildren()){
                     Usuario usuario = dados.getValue(Usuario.class);
 
@@ -143,6 +143,19 @@ public class ContatosFragment extends Fragment {
 
             }
         });
+    }
+
+    public void limparListaContatos(){
+        listaContatos.clear();
+        adicionarMenuNovoGrupo();
+    }
+
+    public void adicionarMenuNovoGrupo(){
+        // Criando o botão para criar um grupo
+        Usuario itemGrupo = new Usuario();
+        itemGrupo.setNome("Novo Grupo");
+        itemGrupo.setEmail("");
+        listaContatos.add(itemGrupo);
     }
 
     public void pesquisarContatos(String texto){
