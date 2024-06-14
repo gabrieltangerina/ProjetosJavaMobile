@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--    <item android:id="@+id/menu_pesquisa"-->
+<!--        android:title="Pesquisar"-->
+<!--        app:showAsAction="always"-->
+<!--        android:icon="@drawable/ic_pesquisa_branco"/>-->
+
+    <item android:id="@+id/menu_pesquisa_produto"
+        android:title="Pesquisar"
+        android:icon="@drawable/ic_pesquisa_branco"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+
+    <item android:id="@+id/menu_carrinho"
+        android:icon="@drawable/ic_carrinho_branco_24"
+        android:title="Carrinho"
+        app:showAsAction="always" />
+
+<!--    <item android:id="@+id/menu_configuracoes"-->
+<!--        android:title="Configurações"-->
+<!--        app:showAsAction="never" />-->
+
+<!--    <item android:id="@+id/menu_sair"-->
+<!--        android:title="Sair"-->
+<!--        app:showAsAction="never" />-->
+
+</menu>

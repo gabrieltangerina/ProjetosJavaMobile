@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">OrderExpress</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_informacoes_pedido">InformacoesPedido</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="menu_financeiro">Financeiro</string>
+    <string name="menu_cliente">Cliente</string>
+    <string name="menu_inf_pedido">Inf. Pedido</string>
+    <string name="menu_itens_pedido">Itens</string>
+    <string name="menu_ultimas_compras">Últi. Compras</string>
+
+    <string-array name="empresa_opcoes">
+        <item>OrderExpress Inc</item>
+        <item>OrderExpress Ltda</item>
+    </string-array>
+
+    <string-array name="op_venda_opcoes">
+        <item>Venda</item>
+        <item>Troca</item>
+    </string-array>
+
+    <string-array name="forma_pagamento_opcoes">
+        <item>Boleto</item>
+        <item>Cheque</item>
+        <item>PIX</item>
+    </string-array>
+
+    <string-array name="status_pedido_opcoes">
+        <item>Confirmado</item>
+        <item>Pendente</item>
+    </string-array>
+
+</resources>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/quantidade"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/nome"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome do produto"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/quantidadeTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quantidade"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textValorUnidade"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Valor unidade"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/valorTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Valor total"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+</LinearLayout>

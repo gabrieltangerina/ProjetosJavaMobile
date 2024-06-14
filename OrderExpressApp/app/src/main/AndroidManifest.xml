@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <application
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@drawable/logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/logo"
+        android:supportsRtl="true"
+        android:theme="@style/Base.Theme.LayoutIdeia"
+        tools:targetApi="31">
+        <activity
+            android:name=".activity.MeusPedidosActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity"/>
+        <activity
+            android:name=".activity.CadastroActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.LoginActivity" />
+        <activity
+            android:name=".activity.MeusClientesActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity" />
+        <activity
+            android:name=".activity.CadastrarClienteActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.SelecionaClienteActivity" />
+        <activity
+            android:name=".activity.ConsultaPedidoActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.DadosPedidoActivity" />
+        <activity
+            android:name=".activity.CarrinhoActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.DadosPedidoActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.DadosPedidoActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.SelecionaClienteActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.LayoutIdeia">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SelecionaClienteActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

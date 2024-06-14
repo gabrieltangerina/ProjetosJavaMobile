@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="background_color">#FEFEFE</color>
+    <color name="cor_logo_preta">#2F2F2F</color>
+    <color name="cinza_escuro">#121212</color>
+    <color name="cinza">#8C8C8C</color>
+    <color name="pedidos_carrinho">#A6A6A6</color>
+    <color name="vermelho">#F20505</color>
+
+    <!-- FEITA PARA O BOTTOM NAVIGATION ANTIGO -->
+    <color name="bottom_nav_item_color">
+        <selector xmlns:android="http://schemas.android.com/apk/res/android">
+            <item android:color="@color/cinza" android:state_checked="false" />
+            <item android:color="@android:color/white" android:state_checked="true" />
+        </selector>
+    </color>
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/Nome_Cod_Cliente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Nome do cliente e código do cliente"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/NomeFantasia_Cliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome fantasia"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/CNPJ_IE_Cliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="CNPJ e IE"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/Endereco_Cliente"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Endereço"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+</LinearLayout>

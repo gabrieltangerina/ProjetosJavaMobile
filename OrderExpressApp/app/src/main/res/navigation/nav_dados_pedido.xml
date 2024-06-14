@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_dados_pedido"
+    app:startDestination="@id/menu_financeiro">
+
+    <fragment
+        android:id="@+id/menu_financeiro"
+        android:name="com.example.layoutideia.fragments.FinanceiroFragment"
+        android:label="fragment_financeiro2"
+        tools:layout="@layout/fragment_financeiro2" />
+    <fragment
+        android:id="@+id/menu_cliente"
+        android:name="com.example.layoutideia.fragments.ClienteFragment"
+        android:label="fragment_cliente2"
+        tools:layout="@layout/fragment_cliente2" />
+    <fragment
+        android:id="@+id/menu_ultimas_compras"
+        android:name="com.example.layoutideia.fragments.ComprasRecentesFragment"
+        android:label="fragment_compras_recentes"
+        tools:layout="@layout/fragment_compras_recentes" />
+    <fragment
+        android:id="@+id/menu_inf_pedido"
+        android:name="com.example.layoutideia.fragments.InformacoesPedidoFragment"
+        android:label="fragment_informacoes_pedido2"
+        tools:layout="@layout/fragment_informacoes_pedido2" />
+    <fragment
+        android:id="@+id/menu_itens_pedido"
+        android:name="com.example.layoutideia.fragments.ItensPedidoFragment"
+        android:label="fragment_itens_pedido2"
+        tools:layout="@layout/fragment_itens_pedido2" />
+</navigation>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_financeiro"
+        android:icon="@drawable/ic_financeiro"
+        android:title="Financeiro" />
+
+    <item
+        android:id="@+id/navigation_cliente"
+        android:icon="@drawable/ic_cliente"
+        android:title="Cliente" />
+
+    <item
+        android:id="@+id/navigation_informacoes_pedido"
+        android:icon="@drawable/ic_informacoes_pedido"
+        android:title="Inf. Pedido" />
+
+    <item
+        android:id="@+id/navigation_itens_pedido"
+        android:icon="@drawable/ic_meus_pedidos"
+        android:title="Itens Pedido"/>
+
+    <item
+        android:id="@+id/navigation_ultimas_compras"
+        android:icon="@drawable/ic_utimas_compras"
+        android:title="Ultimas Compras" />
+
+</menu>

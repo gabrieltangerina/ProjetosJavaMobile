@@ -1,0 +1,24 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.LayoutIdeia" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorAccent">@color/black</item>
+        <item name="colorPrimaryDark">@color/cinza_escuro</item>
+        <item name="colorPrimary">@color/cor_logo_preta</item>
+        <item name="colorPrimaryVariant">@color/black</item>
+    </style>
+    
+    <!-- Toolbar -->
+    <style name="Toolbar" parent="Theme.AppCompat.NoActionBar">
+
+    </style>
+
+    <style name="Widget.App.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.BottomNavigationView</item>
+    </style>
+
+    <style name="ThemeOverlay.App.BottomNavigationView" parent="">
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="Theme.LayoutIdeia" parent="Base.Theme.LayoutIdeia" />
+</resources>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_financeiro"
+        android:icon="@drawable/ic_financeiro"
+        android:title="@string/menu_financeiro"/>
+    <item
+        android:id="@+id/menu_cliente"
+        android:icon="@drawable/ic_cliente"
+        android:title="@string/menu_cliente"/>
+    <item
+        android:id="@+id/menu_inf_pedido"
+        android:icon="@drawable/ic_informacoes_pedido"
+        android:title="@string/menu_inf_pedido"/>
+    <item
+        android:id="@+id/menu_itens_pedido"
+        android:icon="@drawable/ic_meus_pedidos"
+        android:title="@string/menu_itens_pedido"/>
+</menu>
