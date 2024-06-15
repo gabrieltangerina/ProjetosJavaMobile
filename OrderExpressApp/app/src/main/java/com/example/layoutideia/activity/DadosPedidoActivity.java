@@ -8,7 +8,6 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
@@ -67,12 +66,15 @@ public class DadosPedidoActivity extends AppCompatActivity {
     private ItensPedidoFragment itensPedidoFragment;
     private FloatingActionButton fabSalvarPedido;
     private BottomNavigationView bottom_navigation;
-    private InformacoesPedidoFragment informacoesPedidoFragment;
 
     // Dados para Cadastrar o pedido
     private Cliente cliente;
-    private Vendedor vendedor;
-    
+
+    boolean tecladoVisivel = false;
+    private View rootView;
+    private ViewTreeObserver.OnGlobalLayoutListener globalLayoutListener;
+
+    private NavController.OnDestinationChangedListener destinationChangedListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,25 +115,32 @@ public class DadosPedidoActivity extends AppCompatActivity {
             }
         });
 
-        // Deixando Invisível o BottomNavigation quando abre o teclado
+        // Deixa invisivel o bottom navigation ao abrir o teclado
         bottom_navigation = findViewById(R.id.bottom_navigation);
-        final View rootView = findViewById(android.R.id.content);
-        rootView.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+        rootView = findViewById(android.R.id.content);
+        globalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                // Código para ser executado quando ocorrer uma mudança no layout global
                 Rect r = new Rect();
                 rootView.getWindowVisibleDisplayFrame(r);
                 int screenHeight = rootView.getRootView().getHeight();
                 int keypadHeight = screenHeight - r.bottom;
 
-                if (keypadHeight > screenHeight * 0.15) {
-                    bottom_navigation.setVisibility(View.GONE);
-                } else {
-                    bottom_navigation.setVisibility(View.VISIBLE);
+                boolean estadoTecladoAtual = keypadHeight > screenHeight * 0.15;
+                if (estadoTecladoAtual != tecladoVisivel) {
+                    tecladoVisivel = estadoTecladoAtual;
+                    bottom_navigation.setVisibility(tecladoVisivel ? View.GONE : View.VISIBLE);
                 }
             }
-        });
+        };
+
+        rootView.getViewTreeObserver().addOnGlobalLayoutListener(globalLayoutListener);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        rootView.getViewTreeObserver().removeOnGlobalLayoutListener(globalLayoutListener);
     }
 
     private void initNavigation(){
@@ -140,32 +149,43 @@ public class DadosPedidoActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
     }
 
-    public void configurandoToolbar(Toolbar toolbar){
-        navController.addOnDestinationChangedListener(new NavController.OnDestinationChangedListener() {
-            @Override
-            public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
-                if (navDestination.getLabel().equals("fragment_itens_pedido2")) {
-                    toolbar.setTitle("Itens do pedido");
-                    flagToolbar = "I";
-                } else if (navDestination.getLabel().equals("fragment_financeiro2")) {
-                    toolbar.setTitle("Financeiro");
-                    flagToolbar = "F";
-                } else if (navDestination.getLabel().equals("fragment_cliente2")) {
-                    toolbar.setTitle("Informações Cliente");
-                    flagToolbar = "C";
-                } else if (navDestination.getLabel().equals("fragment_informacoes_pedido2")) {
-                    toolbar.setTitle("Informações Pedido");
-                    flagToolbar = "P";
-                } else if (navDestination.getLabel().equals("fragment_compras_recentes")) {
-                    toolbar.setTitle("Últimas Compras");
-                    flagToolbar = "UC";
+    private void configurandoToolbar(Toolbar toolbar) {
+        if (navController != null) {
+            destinationChangedListener = new NavController.OnDestinationChangedListener() {
+                @Override
+                public void onDestinationChanged(@NonNull NavController navController, @NonNull NavDestination navDestination, @Nullable Bundle bundle) {
+                    String label = String.valueOf(navDestination.getLabel());
+                    switch (label) {
+                        case "fragment_itens_pedido2":
+                            atualizarTituloToolbar("Itens do pedido", "I");
+                            break;
+                        case "fragment_financeiro2":
+                            atualizarTituloToolbar("Financeiro", "F");
+                            break;
+                        case "fragment_cliente2":
+                            atualizarTituloToolbar("Informações Cliente", "C");
+                            break;
+                        case "fragment_informacoes_pedido2":
+                            atualizarTituloToolbar("Informações Pedido", "P");
+                            break;
+                        case "fragment_compras_recentes":
+                            atualizarTituloToolbar("Últimas Compras", "UC");
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                // Para forçar a reinflação do menu
-                invalidateOptionsMenu();
-            }
-        });
+            };
+            navController.addOnDestinationChangedListener(destinationChangedListener);
+        }
     }
+
+    private void atualizarTituloToolbar(String titulo, String flag) {
+        toolbar.setTitle(titulo);
+        flagToolbar = flag;
+        invalidateOptionsMenu();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -420,10 +440,13 @@ public class DadosPedidoActivity extends AppCompatActivity {
                     public void run() {
                         editQuantidade.requestFocus();
                         inputMethodManager.showSoftInput(editQuantidade, InputMethodManager.SHOW_IMPLICIT);
+                        // inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                     }
                 }, 200);
             }
         });
+
+        inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         // Adicionando ouvinte ao fechar o AlertDialog clicando no enter do teclado
         editPrecoUnidade.setOnEditorActionListener(new TextView.OnEditorActionListener() {

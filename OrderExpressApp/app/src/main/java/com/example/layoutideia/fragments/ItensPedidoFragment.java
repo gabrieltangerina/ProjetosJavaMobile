@@ -377,18 +377,18 @@ public class ItensPedidoFragment extends Fragment {
     }
 
     public void listaProdutos(){
-        Produto produto1 = new Produto("Assadeira p/a Pizza", "263", 45.63, 45);
-        Produto produto2 = new Produto("Assadeira Retangular", "874", 99.99, 30);
-        Produto produto3 = new Produto("Cadeira Ergonômica", "521", 249.99, 15);
-        Produto produto4 = new Produto("Balde Fosco", "309", 899.99, 10);
-        Produto produto5 = new Produto("Caneca Térmica", "712", 19.99, 100);
-        Produto produto6 = new Produto("Bandeja", "645", 29.99, 50);
-        Produto produto7 = new Produto("Caldeirão", "983", 149.99, 20);
-        Produto produto8 = new Produto("Caneca p/a Chop", "127", 39.99, 80);
-        Produto produto9 = new Produto("Frigideira", "538", 69.99, 25);
-        Produto produto10 = new Produto("Forma p/a Queijo", "942", 299.99, 5);
-        Produto produto11 = new Produto("Pipoqueira", "265", 149.99, 30);
-        Produto produto12 = new Produto("Assadeira Redonda", "718", 59.99, 40);
+        Produto produto1 = new Produto("Panela de Pressão", "789", 79.90, 20);
+        Produto produto2 = new Produto("Faca Chef", "456", 129.99, 15);
+        Produto produto3 = new Produto("Liquidificador", "123", 199.00, 10);
+        Produto produto4 = new Produto("Tábua de Corte", "987", 39.99, 30);
+        Produto produto5 = new Produto("Conjunto de Facas", "654", 149.90, 25);
+        Produto produto6 = new Produto("Garrafa Térmica", "321", 49.99, 40);
+        Produto produto7 = new Produto("Cafeteira Elétrica", "567", 179.99, 15);
+        Produto produto8 = new Produto("Espátula de Silicone", "234", 15.00, 50);
+        Produto produto9 = new Produto("Afiador de Facas", "890", 29.99, 30);
+        Produto produto10 = new Produto("Descascador de Legumes", "543", 9.99, 100);
+        Produto produto11 = new Produto("Pote de Vidro", "210", 24.90, 80);
+        Produto produto12 = new Produto("Escorredor de Macarrão", "876", 34.99, 20);
 
         listaProdutos.add(produto1);
         listaProdutos.add(produto2);
@@ -403,5 +403,6 @@ public class ItensPedidoFragment extends Fragment {
         listaProdutos.add(produto11);
         listaProdutos.add(produto12);
     }
+
 
 }
