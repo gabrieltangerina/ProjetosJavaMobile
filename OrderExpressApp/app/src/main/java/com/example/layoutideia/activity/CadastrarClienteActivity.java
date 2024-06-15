@@ -104,12 +104,7 @@ public class CadastrarClienteActivity extends AppCompatActivity {
                                         cliente.excluirCliente(new DatabaseReference.CompletionListener() {
                                             @Override
                                             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                                Toast.makeText(CadastrarClienteActivity.this, "Cliente excluido", Toast.LENGTH_SHORT).show();
-
-                                                // Send broadcast to notify MeusClientesActivity about the deletion
-                                                Intent intent = new Intent("CLIENTE_EXCLUIDO");
-                                                sendBroadcast(intent);
-
+                                                Toast.makeText(CadastrarClienteActivity.this, "Cliente excluido teste", Toast.LENGTH_SHORT).show();
                                                 finish();
                                             }
                                         });
@@ -157,11 +152,13 @@ public class CadastrarClienteActivity extends AppCompatActivity {
                                     Toast.makeText(CadastrarClienteActivity.this, "Cliente cadastrado com sucesso", Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.GONE);
 
-                                    if(direcionamentoActivity.equals("MeusClientes")){
-                                        startActivity(new Intent(CadastrarClienteActivity.this, MeusClientesActivity.class));
-                                    }else if(direcionamentoActivity.equals("SelecionarCliente")){
-                                        startActivity(new Intent(CadastrarClienteActivity.this, SelecionaClienteActivity.class));
-                                    }
+//                                    if(direcionamentoActivity.equals("MeusClientes")){
+//                                        startActivity(new Intent(CadastrarClienteActivity.this, MeusClientesActivity.class));
+//                                    }else if(direcionamentoActivity.equals("SelecionarCliente")){
+//                                        startActivity(new Intent(CadastrarClienteActivity.this, SelecionaClienteActivity.class));
+//                                    }
+
+                                    finish();
                                 }
                             }
                         });
@@ -181,8 +178,10 @@ public class CadastrarClienteActivity extends AppCompatActivity {
 
                                     if(direcionamentoActivity.equals("MeusClientes")){
                                         startActivity(new Intent(CadastrarClienteActivity.this, MeusClientesActivity.class));
+                                        finish();
                                     }else if(direcionamentoActivity.equals("SelecionarCliente")){
                                         startActivity(new Intent(CadastrarClienteActivity.this, SelecionaClienteActivity.class));
+                                        finish();
                                     }
                                 }
                             }

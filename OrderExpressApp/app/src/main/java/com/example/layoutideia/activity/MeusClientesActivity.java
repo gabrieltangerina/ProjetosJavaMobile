@@ -57,39 +57,6 @@ public class MeusClientesActivity extends AppCompatActivity {
     private DatabaseReference clientesRef;
     private ChildEventListener childEventListenerClientes;
 
-    private BroadcastReceiver clienteExcluidoReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if ("CLIENTE_EXCLUIDO".equals(intent.getAction())) {
-                adapterClientes.notifyDataSetChanged();
-
-                if (progressBarMeusClientes != null) {
-                    progressBarMeusClientes.setVisibility(View.VISIBLE);
-
-                    // Definindo um timer para que se não recuperar os clientes em 5 segundos aparecer uma mensagem
-                    Handler handler = new Handler();
-                    Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            if(progressBarMeusClientes.getVisibility() == View.VISIBLE){
-                                textAvisoErro = findViewById(R.id.textAvisoErro);
-                                imageAvisoErro = findViewById(R.id.imageAvisoErro);
-
-
-                                textAvisoErro.setVisibility(View.VISIBLE);
-                                imageAvisoErro.setVisibility(View.VISIBLE);
-                                progressBarMeusClientes.setVisibility(View.GONE);
-                            }
-                        }
-                    };
-                    handler.postDelayed(runnable, 3500);
-
-                }
-
-            }
-        }
-    };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -140,16 +107,11 @@ public class MeusClientesActivity extends AppCompatActivity {
         };
         handler.postDelayed(runnable, 3500);
 
-        // Register the BroadcastReceiver
-        IntentFilter filter = new IntentFilter("CLIENTE_EXCLUIDO");
-        registerReceiver(clienteExcluidoReceiver, filter);
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(clienteExcluidoReceiver);
     }
 
     public void configurarClickRecyclerView(){
