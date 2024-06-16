@@ -18,10 +18,6 @@ Organizze é um aplicativo de controle financeiro pessoal. Seu objetivo é ofere
 - Configuração e implementação do calendário por meio da biblioteca [material-calendarview](https://github.com/prolificinteractive/material-calendarview)
 - Configuração e implementação do Swipe para a funcionalidade de exclusão de dados de receita e despesa
 
-## Ideias a serem implementadas
-
-- Adicionar metas de valores a serem guardados. Como para uma viajem ou para algum produto por exemplo.
-
 ## Imagens do projeto
 
 ### Slider
