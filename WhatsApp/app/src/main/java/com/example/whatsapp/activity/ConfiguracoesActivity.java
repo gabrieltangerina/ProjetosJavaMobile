@@ -128,6 +128,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
             }
         });
+
         imageButtonGaleria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

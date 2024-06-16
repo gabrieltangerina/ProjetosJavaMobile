@@ -52,6 +52,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ChatActivity extends AppCompatActivity {
 
     private static final int SELECAO_CAMERA = 100;
+    private static final int SELECAO_GALERIA = 200;
+
     private AppBarConfiguration appBarConfiguration;
     private ActivityChatBinding binding;
     private Usuario usuarioDestino;
