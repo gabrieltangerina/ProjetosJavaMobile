@@ -201,7 +201,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
 
                     // Caminho no Firebase para salvar a imagem
                     final StorageReference imagemRef = storageReference.child("imagens")
-                            .child("perfil")
+                                .child("perfil")
                             .child(idUsuario + ".jpeg");
 
                     // Salvando imagem no Firebase

@@ -71,6 +71,7 @@ public class ChatActivity extends AppCompatActivity {
     private EditText editMensagem;
     private RecyclerView recyclerMensagens;
     private ImageView imageCamera;
+    private ImageView imageGaleria;
 
     private MensagensAdapter adapter;
     private List<Mensagem> mensagens = new ArrayList<>();
@@ -160,6 +161,16 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        imageGaleria = findViewById(R.id.imageGaleria);
+        imageGaleria.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(i, SELECAO_GALERIA);
+            }
+        });
+
+
         usuarioRemetente = UsuarioFirebase.getDadosUsuarioLogado();
 
     }
@@ -177,6 +188,9 @@ public class ChatActivity extends AppCompatActivity {
 
                 if(requestCode == SELECAO_CAMERA){
                     imagem = (Bitmap) data.getExtras().get("data");
+                }else if(requestCode == SELECAO_GALERIA){
+                    Uri localImagemSelecionado = data.getData();
+                    imagem = MediaStore.Images.Media.getBitmap(getContentResolver(), localImagemSelecionado);
                 }
 
                 if(imagem != null){
