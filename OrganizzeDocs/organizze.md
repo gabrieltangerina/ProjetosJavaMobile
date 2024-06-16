@@ -18,10 +18,6 @@ Organizze é um aplicativo de controle financeiro pessoal. Seu objetivo é ofere
 - Configuração e implementação do calendário por meio da biblioteca [material-calendarview](https://github.com/prolificinteractive/material-calendarview)
 - Configuração e implementação do Swipe para a funcionalidade de exclusão de dados de receita e despesa
 
-## Ideias a serem implementadas
-
-- Adicionar metas de valores a serem guardados. Como para uma viajem ou para algum produto por exemplo.
-
 ## Imagens do projeto
 
 ### Slider
@@ -39,7 +35,7 @@ Organizze é um aplicativo de controle financeiro pessoal. Seu objetivo é ofere
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrganizzeDocs/cadastro.png" width="252px" height="500px">
 </div>
 
-### Principal e telas para adicionar receitas e despesas
+### Tela principal e telas para adicionar receitas e despesas
 <div displey="flex">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrganizzeDocs/principal.png" width="252px" height="500px">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrganizzeDocs/receita.png" width="252px" height="500px">
