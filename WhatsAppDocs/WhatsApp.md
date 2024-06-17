@@ -1,5 +1,5 @@
-## WhatsApp
-Este projeto foi uma recriação do WhatsApp, seu objetivo foi replicar as funcionalidades básicas de um app de troca de mensagens, como envio de mensagens, criação de grupos e envio de fotos.
+## WhatsApp Clone
+Este projeto é uma recriação do WhatsApp com o objetivo de replicar as funcionalidades básicas de um aplicativo de troca de mensagens, como envio de mensagens, criação de grupos e envio de fotos.
 
 ## Tecnologias Usadas
 - Linguagem: Java
@@ -15,12 +15,12 @@ Este projeto foi uma recriação do WhatsApp, seu objetivo foi replicar as funci
 - Criação de grupos
 - Envio de imagens
 
-A forma de autenticação desse app é por meio de email e senha, diferente do original que é feito por número de telefone.
+A autenticação do aplicativo é feita por meio de email e senha, diferente do WhatsApp original, que utiliza números de telefone.
 
 ## Aprendizados no Desenvolvimento
-- Configuração e implementação do [SmartTabLayout](https://github.com/ogaclejapan/SmartTabLayout). Usado para criar guias na interface do usuário para navegação.
-- Configuração e implementação do [Glide](https://github.com/bumptech/glide). Carregamento e exibição eficiente de imagens, imagens essas que estão salvar no Firebase Storage.
-- Configuração e implementação do [CircleImageView](https://github.com/hdodenhof/CircleImageView). Usado para arredondamento das imagens para as fotos de perfis.
+- Configuração e implementação do SmartTabLayout: Utilizado para criar guias na interface do usuário para navegação.
+- Configuração e implementação do Glide: Utilizado para carregamento e exibição eficiente de imagens, que são armazenadas no Firebase Storage.
+- Configuração e implementação do CircleImageView: Utilizado para arredondamento das imagens de perfil.
 
 ## Imagens do Projeto
 
