@@ -29,3 +29,16 @@ A forma de autenticação desse app é por meio de email e senha, diferente do o
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/WhatsAppDocs/TelaLogin.png" width="252px" height="500px">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/WhatsAppDocs/TelaCadastro.png" width="252px" height="500px">
 </div>
+
+### Telas Principais (Conversas, Contatos, Chat)
+<div displey="flex">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/WhatsAppDocs/TelaConversas.png" width="252px" height="500px">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/WhatsAppDocs/TelaContatos.png" width="252px" height="500px">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/WhatsAppDocs/TelaChat.png" width="252px" height="500px">
+</div>
+
+### Tela de Configurações do Perfil
+<div displey="flex">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/WhatsAppDocs/TelaConfiguracoes.png" width="252px" height="500px">
+</div>
+
