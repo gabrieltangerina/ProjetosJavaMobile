@@ -13,9 +13,6 @@
         android:theme="@style/Base.Theme.LayoutIdeia"
         tools:targetApi="31">
         <activity
-            android:name=".activity.SplashScreenActivity"
-            android:exported="false" />
-        <activity
             android:name=".activity.MeusPedidosActivity"
             android:exported="false"
             android:parentActivityName=".activity.MainActivity" />
