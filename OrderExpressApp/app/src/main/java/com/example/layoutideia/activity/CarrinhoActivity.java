@@ -184,7 +184,7 @@ public class CarrinhoActivity extends AppCompatActivity {
                         // Criando referência aos campos no layout
                         TextView nomeProduto = dialogView.findViewById(R.id.textNomeProduto);
                         EditText editQuantidade = dialogView.findViewById(R.id.editQuantidade);
-                        EditText editPrecoUnidade = dialogView.findViewById(R.id.editPrecoUnidade);
+                        TextView editPrecoUnidade = dialogView.findViewById(R.id.editPrecoUnidade);
                         TextView textTotal = dialogView.findViewById(R.id.textTotalPedido);
                         ImageButton buttonSair = dialogView.findViewById(R.id.buttonSair);
                         Button buttonSalvar = dialogView.findViewById(R.id.buttonSalvar);

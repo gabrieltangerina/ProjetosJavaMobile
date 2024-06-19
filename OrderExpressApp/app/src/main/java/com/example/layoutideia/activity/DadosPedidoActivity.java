@@ -389,18 +389,14 @@ public class DadosPedidoActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 // Validando campos
-                String textoPreco = editPrecoUnidade.getText().toString();
                 String textoQuantidade = editQuantidade.getText().toString();
                 if (textoQuantidade.isEmpty() || textoQuantidade.equals("0")){
                     Toast.makeText(DadosPedidoActivity.this, "Informe a quantidade", Toast.LENGTH_SHORT).show();
                     return;
-                }else if(textoPreco.isEmpty()){
-                    Toast.makeText(DadosPedidoActivity.this, "Informe o preço", Toast.LENGTH_SHORT).show();
-                    return;
                 }
 
                 if (carrinhoViewModel.buscaPorId(produto.getCodigo())) {
-                    carrinhoViewModel.atualizarItemCarrinho(produto.getCodigo(), textoQuantidade, textoPreco);
+                    carrinhoViewModel.atualizarItemCarrinho(produto.getCodigo(), textoQuantidade, produto.getPreco().toString());
                     Toast.makeText(DadosPedidoActivity.this, "Valores do produto alterados", Toast.LENGTH_SHORT).show();
                     atualizarSubtituloToolbar(carrinhoViewModel.calcularTotalPedido());
                     dialog.dismiss();
@@ -408,7 +404,6 @@ public class DadosPedidoActivity extends AppCompatActivity {
                 }
 
                 // Adicionando produto
-                produto.setPreco(Double.parseDouble(textoPreco));
                 produto.setQuantidade(Integer.parseInt(textoQuantidade));
                 produto.setSelecionado(true);
                 carrinhoViewModel.adicionarItemCarrinho(produto);
@@ -449,24 +444,20 @@ public class DadosPedidoActivity extends AppCompatActivity {
         inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
 
         // Adicionando ouvinte ao fechar o AlertDialog clicando no enter do teclado
-        editPrecoUnidade.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        editQuantidade.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE || (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
 
                     // Validando campos
-                    String textoPreco = editPrecoUnidade.getText().toString();
                     String textoQuantidade = editQuantidade.getText().toString();
                     if (textoQuantidade.isEmpty() || textoQuantidade.equals("0")){
                         Toast.makeText(DadosPedidoActivity.this, "Informe a quantidade", Toast.LENGTH_SHORT).show();
                         return false;
-                    }else if(textoPreco.isEmpty()){
-                        Toast.makeText(DadosPedidoActivity.this, "Informe o preço", Toast.LENGTH_SHORT).show();
-                        return false;
                     }
 
                     if (carrinhoViewModel.buscaPorId(produto.getCodigo())) {
-                        carrinhoViewModel.atualizarItemCarrinho(produto.getCodigo(), textoQuantidade, textoPreco);
+                        carrinhoViewModel.atualizarItemCarrinho(produto.getCodigo(), textoQuantidade, produto.getPreco().toString());
                         Toast.makeText(DadosPedidoActivity.this, "Valores do produto alterados", Toast.LENGTH_SHORT).show();
                         toolbar.setSubtitle(carrinhoViewModel.calcularTotalPedido());
                         dialog.dismiss();
@@ -474,7 +465,6 @@ public class DadosPedidoActivity extends AppCompatActivity {
                     }
 
                     // Adicionando produto
-                    produto.setPreco(Double.parseDouble(textoPreco));
                     produto.setQuantidade(Integer.parseInt(textoQuantidade));
                     produto.setSelecionado(true);
                     carrinhoViewModel.adicionarItemCarrinho(produto);

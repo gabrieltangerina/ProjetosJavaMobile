@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnFazerPedido;
     private Button btnMeusClientes;
     private Button btnMeusPedidos;
+    private Button btnMeusProdutos;
 
     private TextView textApresentacao;
     private FirebaseAuth autenticacao;
@@ -71,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
 
         btnMeusPedidos = findViewById(R.id.btnMeusPedidos);
         configurandoClickMeusPedidos();
+
+        btnMeusProdutos = findViewById(R.id.btnMeusProdutos);
+        configurandoClickMeusProdutos();
     }
 
     @Override
@@ -119,5 +123,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void configurandoClickMeusClientes() {
         btnMeusClientes.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MeusClientesActivity.class)));
+    }
+
+    private void configurandoClickMeusProdutos(){
+        btnMeusProdutos.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, MeusProdutosActivity.class)));
     }
 }
