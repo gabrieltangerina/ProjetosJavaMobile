@@ -109,6 +109,18 @@ public class MeusPedidosActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        recuperarPedidos();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        pedidosRef.removeEventListener(childEventListenerPedidos);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.toolbar_meus_pedidos, menu);
