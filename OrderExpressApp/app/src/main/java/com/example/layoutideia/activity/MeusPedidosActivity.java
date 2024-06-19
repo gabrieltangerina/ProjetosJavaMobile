@@ -245,7 +245,7 @@ public class MeusPedidosActivity extends AppCompatActivity {
                                 pedidoSelecionado.excluirPedido(new DatabaseReference.CompletionListener() {
                                     @Override
                                     public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                        listaPedidosAtualizados.remove(position);
+                                        // listaPedidosAtualizados.remove(position);
                                         Toast.makeText(MeusPedidosActivity.this, "Pedido excluido", Toast.LENGTH_SHORT).show();
                                         adapterPedido.notifyDataSetChanged();
                                     }

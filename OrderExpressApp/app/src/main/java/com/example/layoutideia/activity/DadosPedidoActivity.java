@@ -160,7 +160,7 @@ public class DadosPedidoActivity extends AppCompatActivity {
                             atualizarTituloToolbar("Itens do pedido", "I");
                             break;
                         case "fragment_financeiro2":
-                            atualizarTituloToolbar("Financeiro", "F");
+                            atualizarTituloToolbar("Pedidos Recentes", "F");
                             break;
                         case "fragment_cliente2":
                             atualizarTituloToolbar("Informações Cliente", "C");
@@ -324,7 +324,7 @@ public class DadosPedidoActivity extends AppCompatActivity {
         // Criando referência aos campos no layout
         TextView nomeProduto = dialogView.findViewById(R.id.textNomeProduto);
         EditText editQuantidade = dialogView.findViewById(R.id.editQuantidade);
-        EditText editPrecoUnidade = dialogView.findViewById(R.id.editPrecoUnidade);
+        TextView editPrecoUnidade = dialogView.findViewById(R.id.editPrecoUnidade);
         TextView textTotal = dialogView.findViewById(R.id.textTotalPedido);
         ImageButton buttonSair = dialogView.findViewById(R.id.buttonSair);
         Button buttonSalvar = dialogView.findViewById(R.id.buttonSalvar);
@@ -347,7 +347,7 @@ public class DadosPedidoActivity extends AppCompatActivity {
         }
 
         editPrecoUnidade.setText(produto.getPreco().toString());
-        editPrecoUnidade.setSelection(editPrecoUnidade.getText().length());// Para o cursor começar no final da linha, fincando mais facil de alterar o preço
+        // editPrecoUnidade.setSelection(editPrecoUnidade.getText().length());// Para o cursor começar no final da linha, fincando mais facil de alterar o preço
 
         if(!editQuantidade.getText().toString().equals("") && !editPrecoUnidade.getText().toString().equals("")){
             double total = Double.parseDouble(editQuantidade.getText().toString()) * Double.parseDouble(editPrecoUnidade.getText().toString());
