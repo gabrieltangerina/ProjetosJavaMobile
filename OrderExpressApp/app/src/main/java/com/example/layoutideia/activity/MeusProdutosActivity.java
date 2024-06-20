@@ -15,12 +15,16 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.example.layoutideia.R;
+import com.example.layoutideia.adapter.AdapterMeusProdutos;
 import com.example.layoutideia.adapter.AdapterProdutos;
 import com.example.layoutideia.config.ConfiguracaoFirebase;
+import com.example.layoutideia.helper.RecyclerViewClick;
+import com.example.layoutideia.model.Pedido;
 import com.example.layoutideia.model.Produto;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,8 +37,8 @@ import java.util.List;
 public class MeusProdutosActivity extends AppCompatActivity {
 
     private RecyclerView recyclerMeusProdutos;
-    private List<Produto> listaProdutos;
-    private AdapterProdutos adapterProdutos;
+    private List<Produto> listaProdutos = new ArrayList<>();
+    private AdapterMeusProdutos adapterMeusProdutos;
     private ProgressBar progressBarMeusProdutos;
 
     private DatabaseReference database;
@@ -64,21 +68,21 @@ public class MeusProdutosActivity extends AppCompatActivity {
         recyclerMeusProdutos = findViewById(R.id.recyclerProdutos);
 
         // Config. Adapter
-        adapterProdutos = new AdapterProdutos(listaProdutos);
+        adapterMeusProdutos = new AdapterMeusProdutos(listaProdutos);
 
         // Config, RecyclerView
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerMeusProdutos.setLayoutManager(layoutManager);
         recyclerMeusProdutos.setHasFixedSize(true);
         recyclerMeusProdutos.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
-        recyclerMeusProdutos.setAdapter(adapterProdutos);
-
+        recyclerMeusProdutos.setAdapter(adapterMeusProdutos);
+        configurandoClickRecyclerView();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        recuperarProdutos();
+        restaurarClientes();
     }
 
     @Override
@@ -95,7 +99,7 @@ public class MeusProdutosActivity extends AppCompatActivity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Produto produto = snapshot.getValue(Produto.class);
                 listaProdutos.add(produto);
-                adapterProdutos.notifyDataSetChanged();
+                adapterMeusProdutos.notifyDataSetChanged();
                 progressBarMeusProdutos.setVisibility(View.GONE);
             }
 
@@ -119,6 +123,37 @@ public class MeusProdutosActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void configurandoClickRecyclerView(){
+        recyclerMeusProdutos.addOnItemTouchListener(new RecyclerViewClick(
+                getApplicationContext(),
+                recyclerMeusProdutos,
+                new RecyclerViewClick.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        List<Produto> listaProdutosAtualizado = adapterMeusProdutos.getListaProdutos();
+                        Produto produtoSelecionado = listaProdutosAtualizado.get(position);
+
+                        Intent intent = new Intent(MeusProdutosActivity.this, CadastrarProdutoActivity.class);
+                        intent.putExtra("idProduto", produtoSelecionado.getCodigo());
+                        intent.putExtra("nomeProduto", produtoSelecionado.getNome());
+                        intent.putExtra("precoProduto", produtoSelecionado.getPreco());
+                        intent.putExtra("qtndProduto", produtoSelecionado.getQuantidade());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    }
+                }
+        ));
     }
 
     @Override
@@ -175,14 +210,14 @@ public class MeusProdutosActivity extends AppCompatActivity {
 
         }
 
-        adapterProdutos = new AdapterProdutos(listaProdutosBusca);
-        recyclerMeusProdutos.setAdapter(adapterProdutos);
-        adapterProdutos.notifyDataSetChanged();
+        adapterMeusProdutos = new AdapterMeusProdutos(listaProdutosBusca);
+        recyclerMeusProdutos.setAdapter(adapterMeusProdutos);
+        adapterMeusProdutos.notifyDataSetChanged();
     }
 
     private void restaurarClientes(){
-        adapterProdutos = new AdapterProdutos(listaProdutos);
-        recyclerMeusProdutos.setAdapter(adapterProdutos);
-        adapterProdutos.notifyDataSetChanged();
+        adapterMeusProdutos = new AdapterMeusProdutos(listaProdutos);
+        recyclerMeusProdutos.setAdapter(adapterMeusProdutos);
+        adapterMeusProdutos.notifyDataSetChanged();
     }
 }

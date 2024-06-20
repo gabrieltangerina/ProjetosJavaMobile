@@ -242,7 +242,6 @@ public class ItensPedidoFragment extends Fragment {
                 // Adicionando produto
                 produto.setPreco(Double.parseDouble(textoPreco));
                 produto.setQuantidade(Integer.parseInt(textoQuantidade));
-                produto.setSelecionado(true);
                 carrinhoViewModel.adicionarItemCarrinho(produto);
                 Toast.makeText(getActivity(), "'" + produto.getNome() + "' adicionado ao pedido", Toast.LENGTH_SHORT).show();
                 activity.atualizarSubtituloToolbar(carrinhoViewModel.calcularTotalPedido());
@@ -297,7 +296,6 @@ public class ItensPedidoFragment extends Fragment {
                     // Adicionando preco e quantidade personalizada
                     produto.setPreco(Double.parseDouble(textoPreco));
                     produto.setQuantidade(Integer.parseInt(textoQuantidade));
-                    produto.setSelecionado(true);
                     // Adicionando produto
                     carrinhoViewModel.adicionarItemCarrinho(produto);
                     Toast.makeText(getActivity(), "'" + produto.getNome() + "' adicionado ao pedido", Toast.LENGTH_SHORT).show();

@@ -405,7 +405,6 @@ public class DadosPedidoActivity extends AppCompatActivity {
 
                 // Adicionando produto
                 produto.setQuantidade(Integer.parseInt(textoQuantidade));
-                produto.setSelecionado(true);
                 carrinhoViewModel.adicionarItemCarrinho(produto);
                 Toast.makeText(DadosPedidoActivity.this, "'" + produto.getNome() + "' adicionado ao pedido", Toast.LENGTH_SHORT).show();
                 itensPedidoFragment.atualizarAdapter();
@@ -466,7 +465,6 @@ public class DadosPedidoActivity extends AppCompatActivity {
 
                     // Adicionando produto
                     produto.setQuantidade(Integer.parseInt(textoQuantidade));
-                    produto.setSelecionado(true);
                     carrinhoViewModel.adicionarItemCarrinho(produto);
                     Toast.makeText(DadosPedidoActivity.this, "'" + produto.getNome() + "' adicionado ao pedido", Toast.LENGTH_SHORT).show();
                     itensPedidoFragment.atualizarAdapter();
