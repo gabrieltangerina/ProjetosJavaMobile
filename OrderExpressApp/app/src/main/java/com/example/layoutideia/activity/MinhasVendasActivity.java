@@ -2,21 +2,43 @@ package com.example.layoutideia.activity;
 
 import android.os.Bundle;
 import android.widget.CalendarView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.layoutideia.R;
+import com.example.layoutideia.adapter.AdapterMeusProdutos;
+import com.example.layoutideia.adapter.AdapterPedido;
+import com.example.layoutideia.config.ConfiguracaoFirebase;
+import com.example.layoutideia.helper.VendedorFirebase;
+import com.example.layoutideia.model.Pedido;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.prolificinteractive.materialcalendarview.OnMonthChangedListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MinhasVendasActivity extends AppCompatActivity {
 
     private MaterialCalendarView calendarView;
+    private RecyclerView recyclerVendas;
+    private AdapterPedido adapterPedidos;
+    private List<Pedido> listaPedidos = new ArrayList<>();
+    private DatabaseReference vendasRef;
+    private String mesAnoSelecionado;
+    private ValueEventListener valueEventListenerVendas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,21 +51,74 @@ public class MinhasVendasActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        // Config. CalendarView
         calendarView = findViewById(R.id.calendarView);
+        configuraCalendario();
 
-        CharSequence meses[] = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro",
-            "Dezembro"};
+        recyclerVendas = findViewById(R.id.recyclerVendas);
+
+        // Config. Adapter
+        adapterPedidos = new AdapterPedido(listaPedidos);
+
+        // Config. RecyclerView
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerVendas.setLayoutManager(layoutManager);
+        recyclerVendas.setHasFixedSize(true);
+        recyclerVendas.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
+        recyclerVendas.setAdapter(adapterPedidos);
+
+    }
+
+    private void recuperarVendas(){
+        DatabaseReference databaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        vendasRef = databaseRef.child("vendas")
+                .child(VendedorFirebase.getIdVendedorLogado())
+                .child(mesAnoSelecionado); // A data salva será: 062024
+
+        valueEventListenerVendas = vendasRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                listaPedidos.clear();
+
+                for(DataSnapshot dados : snapshot.getChildren()){
+                    Pedido pedido = dados.getValue(Pedido.class);
+                    pedido.setId(dados.getKey());
+                    listaPedidos.add(pedido);
+                }
+
+                adapterPedidos.notifyDataSetChanged(); // Notifica o adapter que os dados mudaram
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void configuraCalendario(){
+        // Personalizando nome dos meses
+        CharSequence meses[] = {"Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"};
         calendarView.setTitleMonths(meses);
 
-        CharSequence diasSemana[] = {"Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sabado", "Domingo"};
+        // Personalizando nome dos dias da semana
+        CharSequence diasSemana[] = {"Seg", "Ter", "Qua", "Qui", "Sex", "Sab", "Dom"};
         calendarView.setWeekDayLabels(diasSemana);
+
+        // Data que o calendário inicia, ou seja, quando ele abre e nao ocorre o onMonthChanged
+        CalendarDay dataCalendario = calendarView.getCurrentDate();
+        String mesSelecionado = String.format("%02d", (dataCalendario.getMonth() + 1)); // Adicionando um 0 antes do numero para ficar 022024 e nao 22024
+        mesAnoSelecionado = String.valueOf(mesSelecionado + "" + dataCalendario.getYear());
 
         calendarView.setOnMonthChangedListener(new OnMonthChangedListener() {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
-                Toast.makeText(MinhasVendasActivity.this, date + " | " + (date.getMonth() + 1), Toast.LENGTH_SHORT).show();
+                String mesSelecionado = String.format("%02d", (date.getMonth() + 1)); // Adicionando um 0 antes do numero para ficar 022024 e nao 22024
+                mesAnoSelecionado = String.valueOf(mesSelecionado + date.getYear());
+
+                vendasRef.removeEventListener(valueEventListenerVendas); // O "recuperarMovimentacoes()" adiciona um Listener, para evitar add vários Listener é removido o anterior
+                recuperarVendas();
             }
         });
     }
+
 }

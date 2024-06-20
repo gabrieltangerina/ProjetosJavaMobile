@@ -54,7 +54,16 @@ public class Pedido implements Serializable {
                 .child(vendedor.getId())
                 .child(getId());
 
+
+        String dataPedido = formatarData(getDataPedido());
+        DatabaseReference vendasVendedor = databaseRef
+                .child("vendas")
+                .child(vendedor.getId())
+                .child(dataPedido);
+
+
         todosPedidosVendedor.setValue(this);
+        vendasVendedor.setValue(this);
         pedido.setValue(this, listener);
     }
 
@@ -74,6 +83,23 @@ public class Pedido implements Serializable {
 
         pedido.removeValue(listener);
         todosPedidosVendedor.removeValue();
+    }
+
+    private static String formatarData(String date) {
+        // Dividir a string da data em partes (dia, mês, ano)
+        String[] dateParts = date.split("/");
+
+        // Obter o mês e o ano
+        String month = dateParts[1];
+        String year = dateParts[2];
+
+        // Se o mês tiver um dígito, adicionar um zero à esquerda
+        if (month.length() == 1) {
+            month = "0" + month;
+        }
+
+        // Concatenar o mês e o ano
+        return month + year;
     }
 
     public String getDescricao() {
