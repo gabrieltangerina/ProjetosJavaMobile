@@ -64,6 +64,7 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
             btnAlterar = findViewById(R.id.buttonAlterar);
 
             btnAlterar.setVisibility(View.VISIBLE);
+            btnExcluir.setVisibility(View.VISIBLE);
             btnAlterar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -88,7 +89,6 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
                 }
             });
 
-            btnExcluir.setVisibility(View.VISIBLE);
             btnExcluir.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

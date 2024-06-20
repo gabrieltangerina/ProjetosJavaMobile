@@ -13,9 +13,13 @@
         android:theme="@style/Base.Theme.LayoutIdeia"
         tools:targetApi="31">
         <activity
+            android:name=".activity.MinhasVendasActivity"
+            android:exported="false"
+            android:parentActivityName=".activity.MainActivity"/>
+        <activity
             android:name=".activity.CadastrarProdutoActivity"
             android:exported="false"
-            android:parentActivityName=".activity.MeusProdutosActivity"/>
+            android:parentActivityName=".activity.MeusProdutosActivity" />
         <activity
             android:name=".activity.MeusProdutosActivity"
             android:exported="false"

@@ -68,7 +68,7 @@
         android:text="Fazer Pedido"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/btnMeusProdutos"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
@@ -89,17 +89,29 @@
     <Button
         android:id="@+id/btnMeusPedidos"
         android:layout_width="0dp"
+        android:layout_height="90dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="@color/cor_logo_preta"
+        android:drawableTop="@drawable/ic_meus_pedidos"
+        android:text="Meus Pedidos"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/btnMeusClientes"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+
+    <Button
+        android:id="@+id/btnVendasMes"
+        android:layout_width="0dp"
         android:layout_height="115dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/cor_logo_preta"
-        android:drawableTop="@drawable/ic_meus_pedidos"
-        android:text="Meus Pedidos"
+        android:drawableTop="@drawable/ic_vendas"
+        android:text="Minhas Vendas"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintHorizontal_bias="0.571"
         app:layout_constraintStart_toStartOf="@+id/guideline" />
 
     <Button
@@ -116,5 +128,12 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -21,7 +21,6 @@ import android.widget.ProgressBar;
 
 import com.example.layoutideia.R;
 import com.example.layoutideia.adapter.AdapterMeusProdutos;
-import com.example.layoutideia.adapter.AdapterProdutos;
 import com.example.layoutideia.config.ConfiguracaoFirebase;
 import com.example.layoutideia.helper.RecyclerViewClick;
 import com.example.layoutideia.model.Pedido;

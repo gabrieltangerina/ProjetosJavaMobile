@@ -68,4 +68,7 @@ dependencies {
 
     // Config. Autenticação Firebase
     implementation("com.google.firebase:firebase-auth")
+
+    // Config. MaterialCalendarView
+    implementation("com.github.prolificinteractive:material-calendarview:1.4.3")
 }
