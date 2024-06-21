@@ -59,7 +59,8 @@ public class Pedido implements Serializable {
         DatabaseReference vendasVendedor = databaseRef
                 .child("vendas")
                 .child(vendedor.getId())
-                .child(dataPedido);
+                .child(dataPedido)
+                .child(getId());
 
 
         todosPedidosVendedor.setValue(this);

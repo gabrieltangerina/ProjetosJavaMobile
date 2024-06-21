@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Button btnMeusClientes;
     private Button btnMeusPedidos;
     private Button btnMeusProdutos;
+    private Button btnVendasMes;
 
     private TextView textApresentacao;
     private FirebaseAuth autenticacao;
@@ -75,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
         btnMeusProdutos = findViewById(R.id.btnMeusProdutos);
         configurandoClickMeusProdutos();
+
+        btnVendasMes = findViewById(R.id.btnVendasMes);
+        configurandoClickVendasMes();
     }
 
     @Override
@@ -105,6 +109,13 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             Toast.makeText(this, "Erro ao deslogar usuário: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void configurandoClickVendasMes(){
+        btnVendasMes.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), MinhasVendasActivity.class);
+            startActivity(intent);
+        });
     }
 
     private void configurandoClickMeusPedidos(){

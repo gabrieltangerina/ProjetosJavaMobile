@@ -1,8 +1,10 @@
 package com.example.layoutideia.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.CalendarView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,8 @@ public class MinhasVendasActivity extends AppCompatActivity {
     private DatabaseReference vendasRef;
     private String mesAnoSelecionado;
     private ValueEventListener valueEventListenerVendas;
+    private Toolbar toolbar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +50,7 @@ public class MinhasVendasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_minhas_vendas);
 
         // Config. Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Vendas");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -68,11 +72,27 @@ public class MinhasVendasActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        recuperarVendas();
+    }
+
+    private void atualizarTotal(){
+        Double total = 0.00;
+        for(Pedido pedido: listaPedidos){
+            total += pedido.getTotal();
+        }
+        toolbar.setSubtitle("Total mês: R$" + total);
+    }
+
     private void recuperarVendas(){
+        listaPedidos.clear();
+
         DatabaseReference databaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
         vendasRef = databaseRef.child("vendas")
                 .child(VendedorFirebase.getIdVendedorLogado())
-                .child(mesAnoSelecionado); // A data salva será: 062024
+                .child(mesAnoSelecionado); // A data salva será no fomato mes e ano: 062024
 
         valueEventListenerVendas = vendasRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -85,6 +105,7 @@ public class MinhasVendasActivity extends AppCompatActivity {
                     listaPedidos.add(pedido);
                 }
 
+                atualizarTotal();
                 adapterPedidos.notifyDataSetChanged(); // Notifica o adapter que os dados mudaram
             }
 
@@ -113,7 +134,7 @@ public class MinhasVendasActivity extends AppCompatActivity {
             @Override
             public void onMonthChanged(MaterialCalendarView widget, CalendarDay date) {
                 String mesSelecionado = String.format("%02d", (date.getMonth() + 1)); // Adicionando um 0 antes do numero para ficar 022024 e nao 22024
-                mesAnoSelecionado = String.valueOf(mesSelecionado + date.getYear());
+                mesAnoSelecionado = mesSelecionado + date.getYear();
 
                 vendasRef.removeEventListener(valueEventListenerVendas); // O "recuperarMovimentacoes()" adiciona um Listener, para evitar add vários Listener é removido o anterior
                 recuperarVendas();

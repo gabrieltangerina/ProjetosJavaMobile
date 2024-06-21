@@ -90,6 +90,7 @@
         android:id="@+id/btnMeusPedidos"
         android:layout_width="0dp"
         android:layout_height="90dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:backgroundTint="@color/cor_logo_preta"
         android:drawableTop="@drawable/ic_meus_pedidos"
