@@ -2,6 +2,7 @@ package com.example.layoutideia.activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -9,20 +10,26 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.layoutideia.R;
 import com.example.layoutideia.adapter.AdapterMeusProdutos;
 import com.example.layoutideia.config.ConfiguracaoFirebase;
 import com.example.layoutideia.helper.RecyclerViewClick;
+import com.example.layoutideia.model.Cliente;
 import com.example.layoutideia.model.Pedido;
 import com.example.layoutideia.model.Produto;
 import com.google.firebase.database.ChildEventListener;
@@ -43,6 +50,9 @@ public class MeusProdutosActivity extends AppCompatActivity {
     private DatabaseReference database;
     private DatabaseReference produtosRef;
     private ChildEventListener childEventListenerProdutos;
+
+    private TextView textAvisoErro;
+    private ImageView imageAvisoErro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +86,23 @@ public class MeusProdutosActivity extends AppCompatActivity {
         recyclerMeusProdutos.addItemDecoration(new DividerItemDecoration(this, LinearLayout.VERTICAL));
         recyclerMeusProdutos.setAdapter(adapterMeusProdutos);
         configurandoClickRecyclerView();
+
+        // Definindo um timer para que se não recuperar os clientes em alguns segundos aparecer uma mensagem
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(progressBarMeusProdutos.getVisibility() == View.VISIBLE){
+                    textAvisoErro = findViewById(R.id.textAvisoErro);
+                    imageAvisoErro = findViewById(R.id.imageAvisoErro);
+
+                    textAvisoErro.setVisibility(View.VISIBLE);
+                    imageAvisoErro.setVisibility(View.VISIBLE);
+                    progressBarMeusProdutos.setVisibility(View.GONE);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 3500);
     }
 
     @Override
@@ -109,7 +136,9 @@ public class MeusProdutosActivity extends AppCompatActivity {
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
+                Produto produtoRemovido = snapshot.getValue(Produto.class);
+                listaProdutos.removeIf(cliente -> cliente.getCodigo().equals(produtoRemovido.getCodigo()));
+                adapterMeusProdutos.notifyDataSetChanged();
             }
 
             @Override
@@ -144,7 +173,33 @@ public class MeusProdutosActivity extends AppCompatActivity {
 
                     @Override
                     public void onLongItemClick(View view, int position) {
+                        List<Produto> listaProdutosAtualizados = adapterMeusProdutos.getListaProdutos();
+                        Produto produtoSelecionado = listaProdutosAtualizados.get(position);
 
+                        new AlertDialog.Builder(MeusProdutosActivity.this)
+                                .setTitle("Excluir Produto")
+                                .setMessage("Tem certeza que deseja excluir o produto? Os dados serão excluidos permanentemente")
+                                .setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        produtoSelecionado.excluirProduto(new DatabaseReference.CompletionListener() {
+                                            @Override
+                                            public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                                                // listaPedidosAtualizados.remove(position);
+                                                Toast.makeText(MeusProdutosActivity.this, "Produto excluido", Toast.LENGTH_SHORT).show();
+                                                adapterMeusProdutos.notifyDataSetChanged();
+                                            }
+                                        });
+                                    }
+                                })
+                                .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss(); // Fecha o diálogo
+                                    }
+                                })
+                                .create()
+                                .show();
                     }
 
                     @Override

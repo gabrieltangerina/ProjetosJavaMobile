@@ -90,7 +90,7 @@ public class MeusPedidosActivity extends AppCompatActivity {
         recyclerPedidos.setAdapter(adapterPedido);
         configurandoClickRecyclerView();
 
-        // Definindo um timer para que se não recuperar os clientes em 5 segundos aparecer uma mensagem
+        // Definindo um timer para que se não recuperar os clientes em alguns segundos aparecer uma mensagem
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override

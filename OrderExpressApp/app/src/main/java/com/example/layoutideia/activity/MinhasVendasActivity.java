@@ -3,8 +3,10 @@ package com.example.layoutideia.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CalendarView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -43,6 +45,8 @@ public class MinhasVendasActivity extends AppCompatActivity {
     private ValueEventListener valueEventListenerVendas;
     private Toolbar toolbar;
 
+    private TextView textAvisoErro;
+    private ImageView imageAvisoErro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +87,7 @@ public class MinhasVendasActivity extends AppCompatActivity {
         for(Pedido pedido: listaPedidos){
             total += pedido.getTotal();
         }
+
         toolbar.setSubtitle("Total mês: R$" + total);
     }
 
@@ -107,6 +112,18 @@ public class MinhasVendasActivity extends AppCompatActivity {
 
                 atualizarTotal();
                 adapterPedidos.notifyDataSetChanged(); // Notifica o adapter que os dados mudaram
+
+
+                textAvisoErro = findViewById(R.id.textAvisoErro);
+                imageAvisoErro = findViewById(R.id.imageAvisoErro);
+
+                if(listaPedidos.isEmpty()){
+                    textAvisoErro.setVisibility(View.VISIBLE);
+                    imageAvisoErro.setVisibility(View.VISIBLE);
+                }else{
+                    textAvisoErro.setVisibility(View.GONE);
+                    imageAvisoErro.setVisibility(View.GONE);
+                }
             }
 
             @Override

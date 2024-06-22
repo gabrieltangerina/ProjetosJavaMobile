@@ -52,4 +52,29 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendar_container" />
 
+    <TextView
+        android:id="@+id/textAvisoErro"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:text="Você não possui vendas este mês."
+        android:textAlignment="center"
+        android:visibility="gone"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageAvisoErro" />
+
+    <ImageView
+        android:id="@+id/imageAvisoErro"
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include9"
+        app:srcCompat="@drawable/imagemfinanceiro" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
