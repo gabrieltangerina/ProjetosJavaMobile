@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -25,15 +27,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.layoutideia.R;
 import com.example.layoutideia.activity.DadosPedidoActivity;
 import com.example.layoutideia.adapter.AdapterProdutos;
+import com.example.layoutideia.config.ConfiguracaoFirebase;
 import com.example.layoutideia.helper.RecyclerViewClick;
 import com.example.layoutideia.model.Produto;
 import com.example.layoutideia.viewmodel.CarrinhoViewModel;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,10 +49,15 @@ import java.util.List;
 public class ItensPedidoFragment extends Fragment {
     private RecyclerView recyclerProdutos;
     private AdapterProdutos adapter;
-    private List<Produto> listaProdutos;
+    private List<Produto> listaProdutos = new ArrayList<>();
     private InputMethodManager inputMethodManager;
     private CarrinhoViewModel carrinhoViewModel;
     private DadosPedidoActivity activity;
+
+    private DatabaseReference database;
+    private DatabaseReference produtosRef;
+    private ChildEventListener childEventListenerProdutos;
+    private ProgressBar progressBarProdutos;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,11 +68,16 @@ public class ItensPedidoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_itens_pedido2, container, false);
 
-        // Inicialize a lista de produtos
-        listaProdutos = new ArrayList<>();
-        listaProdutos();
+        progressBarProdutos = rootView.findViewById(R.id.progressBarProdutos);
 
         carrinhoViewModel = new ViewModelProvider(this).get(CarrinhoViewModel.class);
+
+        database = ConfiguracaoFirebase.getFirebaseDatabase();
+        produtosRef = database
+                .child("produtos");
+
+        recuperarProdutos();
+
         adapter = new AdapterProdutos(listaProdutos, carrinhoViewModel);
 
         recyclerProdutos = rootView.findViewById(R.id.recyclerProdutos);
@@ -101,6 +119,59 @@ public class ItensPedidoFragment extends Fragment {
         adapter = new AdapterProdutos(listaProdutosBusca, carrinhoViewModel);
         recyclerProdutos.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        restaurarProdutos();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        produtosRef.removeEventListener(childEventListenerProdutos);
+    }
+
+    private  void restaurarProdutos(){
+        adapter = new AdapterProdutos(listaProdutos);
+        recyclerProdutos.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void recuperarProdutos(){
+        progressBarProdutos.setVisibility(View.VISIBLE);
+        listaProdutos.clear();
+
+        childEventListenerProdutos = produtosRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Produto produto = snapshot.getValue(Produto.class);
+                listaProdutos.add(produto);
+                adapter.notifyDataSetChanged();
+                progressBarProdutos.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void configurandoRecyclerProdutos(){
