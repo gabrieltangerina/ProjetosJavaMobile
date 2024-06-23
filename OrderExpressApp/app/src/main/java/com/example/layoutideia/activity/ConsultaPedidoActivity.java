@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.layoutideia.R;
+import com.example.layoutideia.adapter.AdapterItensCarrinho;
 import com.example.layoutideia.adapter.AdapterProdutos;
 import com.example.layoutideia.helper.GeraCodigo;
 import com.example.layoutideia.helper.VendedorFirebase;
@@ -68,7 +69,7 @@ public class ConsultaPedidoActivity extends AppCompatActivity {
     private RecyclerView recyclerItensPedidoFinal;
     private Button buttonConfirmar;
     private Button buttonExcluir;
-    private AdapterProdutos adapter;
+    private AdapterItensCarrinho adapter;
 
     private DatabaseReference datatabase;
 
@@ -178,7 +179,7 @@ public class ConsultaPedidoActivity extends AppCompatActivity {
         textDescricao = findViewById(R.id.textDescricao);
 
         // Config. Adapter
-        adapter = new AdapterProdutos(listaProdutos);
+        adapter = new AdapterItensCarrinho(listaProdutos, this);
 
         // Config. Recycler View
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);

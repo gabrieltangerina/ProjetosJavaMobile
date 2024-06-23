@@ -51,6 +51,14 @@ public class Produto implements Serializable {
         produto.setValue(this, listener);
     }
 
+    public void diminuirEstoque(int quantidadeVendida, DatabaseReference.CompletionListener listener) {
+        DatabaseReference databaseRef = ConfiguracaoFirebase.getFirebaseDatabase();
+        DatabaseReference produtoRef = databaseRef.child("produtos").child(getCodigo());
+
+        produtoRef.child("estoque").setValue(getEstoque() - quantidadeVendida, listener);
+    }
+
+
     @Exclude
     public Integer getQuantidade() {
         return quantidade;

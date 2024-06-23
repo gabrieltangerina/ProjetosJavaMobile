@@ -62,6 +62,15 @@ public class Pedido implements Serializable {
                 .child(dataPedido)
                 .child(getId());
 
+        for (Produto produto : itens) {
+            produto.diminuirEstoque(produto.getQuantidade(), (databaseError, databaseReference) -> {
+                if (databaseError != null) {
+                    Log.e("Firebase", "Erro ao atualizar estoque: " + databaseError.getMessage());
+                } else {
+                    Log.d("Firebase", "Estoque atualizado com sucesso.");
+                }
+            });
+        }
 
         todosPedidosVendedor.setValue(this);
         vendasVendedor.setValue(this);

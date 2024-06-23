@@ -60,7 +60,7 @@ public class AdapterProdutos extends RecyclerView.Adapter<AdapterProdutos.MyView
             Produto produtoCarrinho = CarrinhoViewModel.buscaPorIdRetornaProdutoStatic(codigoProduto);
             holder.containerProduto.setBackgroundResource(R.color.pedidos_carrinho);
             holder.quantidade.setText("Qtnd: " + produtoCarrinho.getQuantidade());
-            double totalProduto = Double.parseDouble(produto.getQuantidade().toString()) * Double.parseDouble(produto.getPreco().toString());
+            double totalProduto = Double.parseDouble(produtoCarrinho.getQuantidade().toString()) * Double.parseDouble(produto.getPreco().toString());
             holder.preco.setText(String.format("Total: R$%.2f", totalProduto));
 
             holder.valorUnidade.setVisibility(View.VISIBLE);

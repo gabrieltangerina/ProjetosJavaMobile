@@ -268,8 +268,6 @@ public class ItensPedidoFragment extends Fragment {
         }
 
         editPrecoUnidade.setText(produto.getPreco().toString());
-        // Para o cursor começar no final da linha, fincando mais facil de alterar o preço
-        // editPrecoUnidade.setSelection(editPrecoUnidade.getText().length());
 
         if(!editQuantidade.getText().toString().equals("") && !editPrecoUnidade.getText().toString().equals("")){
             double total = Double.parseDouble(editQuantidade.getText().toString()) * Double.parseDouble(editPrecoUnidade.getText().toString());
@@ -331,12 +329,21 @@ public class ItensPedidoFragment extends Fragment {
                     return;
                 }
 
+
+
                 // Adicionando produto
                 produto.setPreco(Double.parseDouble(textoPreco));
                 produto.setQuantidade(Integer.parseInt(textoQuantidade));
-                carrinhoViewModel.adicionarItemCarrinho(produto);
-                Toast.makeText(getActivity(), "'" + produto.getNome() + "' adicionado ao pedido", Toast.LENGTH_SHORT).show();
-                activity.atualizarSubtituloToolbar(carrinhoViewModel.calcularTotalPedido());
+
+                if(produto.getQuantidade() > produto.getEstoque()){
+                    Toast.makeText(activity, "Não há '" + produto.getNome()  + "' necessários no estoque", Toast.LENGTH_SHORT).show();
+                    return;
+                }else{
+                    carrinhoViewModel.adicionarItemCarrinho(produto);
+                    Toast.makeText(getActivity(), "'" + produto.getNome() + "' adicionado ao pedido", Toast.LENGTH_SHORT).show();
+                    activity.atualizarSubtituloToolbar(carrinhoViewModel.calcularTotalPedido());
+                }
+
 
                 adapter.notifyDataSetChanged();
 
@@ -388,10 +395,18 @@ public class ItensPedidoFragment extends Fragment {
                     // Adicionando preco e quantidade personalizada
                     produto.setPreco(Double.parseDouble(textoPreco));
                     produto.setQuantidade(Integer.parseInt(textoQuantidade));
+
                     // Adicionando produto
-                    carrinhoViewModel.adicionarItemCarrinho(produto);
-                    Toast.makeText(getActivity(), "'" + produto.getNome() + "' adicionado ao pedido", Toast.LENGTH_SHORT).show();
-                    activity.atualizarSubtituloToolbar(carrinhoViewModel.calcularTotalPedido());
+
+                    if(produto.getQuantidade() > produto.getEstoque()){
+                        Toast.makeText(activity, "Não há '" + produto.getNome() + "' necessários no estoque", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }else{
+                        carrinhoViewModel.adicionarItemCarrinho(produto);
+                        Toast.makeText(getActivity(), "'" + produto.getNome() + "' adicionado ao pedido", Toast.LENGTH_SHORT).show();
+                        activity.atualizarSubtituloToolbar(carrinhoViewModel.calcularTotalPedido());
+                    }
+
 
                     adapter.notifyDataSetChanged();
 
