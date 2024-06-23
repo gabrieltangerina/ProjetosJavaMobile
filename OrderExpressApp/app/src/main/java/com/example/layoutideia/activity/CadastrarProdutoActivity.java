@@ -8,6 +8,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -52,11 +53,11 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
             String idProduto = getIntent().getStringExtra("idProduto");
             String nomeProduto = getIntent().getStringExtra("nomeProduto");
             Double precoProduto = getIntent().getDoubleExtra("precoProduto", 0);
-            Integer qtndProduto = getIntent().getIntExtra("qtndProduto", 0);
+            Integer estoqueProduto = getIntent().getIntExtra("estoqueProduto", 0);
 
             editNomeProduto.setText(nomeProduto);
             editPrecoProduto.setText(precoProduto.toString());
-            editQuantidadeProduto.setText(qtndProduto.toString());
+            editQuantidadeProduto.setText(estoqueProduto.toString());
 
             btnCadastrar = findViewById(R.id.buttonCadastrar);
             btnCadastrar.setVisibility(View.GONE);
@@ -72,7 +73,7 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
                     produto.setCodigo(idProduto);
                     produto.setNome(editNomeProduto.getText().toString());
                     produto.setPreco(Double.parseDouble(editPrecoProduto.getText().toString()));
-                    produto.setQuantidade(Integer.parseInt(editQuantidadeProduto.getText().toString()));
+                    produto.setEstoque(Integer.parseInt(editQuantidadeProduto.getText().toString()));
 
                     produto.atualizarProduto(new DatabaseReference.CompletionListener() {
                         @Override
@@ -94,9 +95,6 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Produto produto = new Produto();
                     produto.setCodigo(idProduto);
-                    produto.setNome(nomeProduto);
-                    produto.setPreco(precoProduto);
-                    produto.setQuantidade(qtndProduto);
 
                     new AlertDialog.Builder(CadastrarProdutoActivity.this)
                             .setTitle("Excluir Produto")
@@ -108,8 +106,14 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
                                     produto.excluirProduto(new DatabaseReference.CompletionListener() {
                                         @Override
                                         public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                            Toast.makeText(CadastrarProdutoActivity.this, "Produto excluido", Toast.LENGTH_SHORT).show();
-                                            finish();
+                                            if(error != null){
+                                                Toast.makeText(CadastrarProdutoActivity.this, "Ocorreu um erro ao excluir o produto", Toast.LENGTH_SHORT).show();
+                                                Log.e("ERRO EXCLUIR PRODUTO", error.getMessage());
+                                                finish();
+                                            }else{
+                                                Toast.makeText(CadastrarProdutoActivity.this, "Produto excluido", Toast.LENGTH_SHORT).show();
+                                                finish();
+                                            }
                                         }
                                     });
                                 }
@@ -140,13 +144,14 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
                         produto.setNome(nomeProduto);
                         String precoFormatado = formatarPreco(precoProduto);
                         produto.setPreco(Double.parseDouble(precoFormatado));
-                        produto.setQuantidade(Integer.parseInt(qtndProduto));
+                        produto.setEstoque(Integer.parseInt(qtndProduto));
 
                         produto.salvarProduto(new DatabaseReference.CompletionListener() {
                             @Override
                             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
                                 if(error != null){
                                     Toast.makeText(CadastrarProdutoActivity.this, "Ocorreu um erro ao salvar o produto: " + produto.getNome(), Toast.LENGTH_SHORT).show();
+                                    finish();
                                 }else{
                                     Toast.makeText(CadastrarProdutoActivity.this, "Produto cadastrado com sucesso!", Toast.LENGTH_SHORT).show();
                                     finish();

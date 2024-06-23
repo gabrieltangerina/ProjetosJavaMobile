@@ -2,6 +2,7 @@ package com.example.layoutideia.model;
 
 import com.example.layoutideia.config.ConfiguracaoFirebase;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 
@@ -50,10 +51,12 @@ public class Produto implements Serializable {
         produto.setValue(this, listener);
     }
 
+    @Exclude
     public Integer getQuantidade() {
         return quantidade;
     }
 
+    @Exclude
     public void setQuantidade(Integer quantidade) {
         this.quantidade = quantidade;
     }
@@ -80,5 +83,9 @@ public class Produto implements Serializable {
     }
     public Integer getEstoque() {
         return estoque;
+    }
+
+    public void setEstoque(Integer estoque) {
+        this.estoque = estoque;
     }
 }

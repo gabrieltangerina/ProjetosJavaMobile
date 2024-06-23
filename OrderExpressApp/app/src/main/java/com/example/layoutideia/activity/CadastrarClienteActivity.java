@@ -104,8 +104,14 @@ public class CadastrarClienteActivity extends AppCompatActivity {
                                         cliente.excluirCliente(new DatabaseReference.CompletionListener() {
                                             @Override
                                             public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
-                                                Toast.makeText(CadastrarClienteActivity.this, "Cliente excluido teste", Toast.LENGTH_SHORT).show();
-                                                finish();
+                                                if(error != null){
+                                                    Toast.makeText(CadastrarClienteActivity.this, "Ocorreu um erro ao excluir o cliente", Toast.LENGTH_SHORT).show();
+                                                    Log.e("ERRO EXCLUIR CLIENTE", error.getMessage());
+                                                    finish();
+                                                }else{
+                                                    Toast.makeText(CadastrarClienteActivity.this, "Cliente excluido", Toast.LENGTH_SHORT).show();
+                                                    finish();
+                                                }
                                             }
                                         });
                                     }
@@ -151,13 +157,6 @@ public class CadastrarClienteActivity extends AppCompatActivity {
                                 }else{
                                     Toast.makeText(CadastrarClienteActivity.this, "Cliente cadastrado com sucesso", Toast.LENGTH_SHORT).show();
                                     progressBar.setVisibility(View.GONE);
-
-//                                    if(direcionamentoActivity.equals("MeusClientes")){
-//                                        startActivity(new Intent(CadastrarClienteActivity.this, MeusClientesActivity.class));
-//                                    }else if(direcionamentoActivity.equals("SelecionarCliente")){
-//                                        startActivity(new Intent(CadastrarClienteActivity.this, SelecionaClienteActivity.class));
-//                                    }
-
                                     finish();
                                 }
                             }

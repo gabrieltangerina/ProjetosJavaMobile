@@ -72,8 +72,6 @@ public class MeusProdutosActivity extends AppCompatActivity {
         produtosRef = database
                 .child("produtos");
 
-        recuperarProdutos();
-
         recyclerMeusProdutos = findViewById(R.id.recyclerProdutos);
 
         // Config. Adapter
@@ -87,15 +85,15 @@ public class MeusProdutosActivity extends AppCompatActivity {
         recyclerMeusProdutos.setAdapter(adapterMeusProdutos);
         configurandoClickRecyclerView();
 
+        textAvisoErro = findViewById(R.id.textAvisoErro);
+        imageAvisoErro = findViewById(R.id.imageAvisoErro);
+
         // Definindo um timer para que se não recuperar os clientes em alguns segundos aparecer uma mensagem
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 if(progressBarMeusProdutos.getVisibility() == View.VISIBLE){
-                    textAvisoErro = findViewById(R.id.textAvisoErro);
-                    imageAvisoErro = findViewById(R.id.imageAvisoErro);
-
                     textAvisoErro.setVisibility(View.VISIBLE);
                     imageAvisoErro.setVisibility(View.VISIBLE);
                     progressBarMeusProdutos.setVisibility(View.GONE);
@@ -108,7 +106,8 @@ public class MeusProdutosActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        restaurarClientes();
+        adapterMeusProdutos.notifyDataSetChanged();
+        recuperarProdutos();
     }
 
     @Override
@@ -127,6 +126,8 @@ public class MeusProdutosActivity extends AppCompatActivity {
                 listaProdutos.add(produto);
                 adapterMeusProdutos.notifyDataSetChanged();
                 progressBarMeusProdutos.setVisibility(View.GONE);
+                imageAvisoErro.setVisibility(View.GONE);
+                textAvisoErro.setVisibility(View.GONE);
             }
 
             @Override
@@ -137,8 +138,30 @@ public class MeusProdutosActivity extends AppCompatActivity {
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {
                 Produto produtoRemovido = snapshot.getValue(Produto.class);
-                listaProdutos.removeIf(cliente -> cliente.getCodigo().equals(produtoRemovido.getCodigo()));
+                listaProdutos.removeIf(produto -> produto.getCodigo().equals(produtoRemovido.getCodigo()));
                 adapterMeusProdutos.notifyDataSetChanged();
+
+                if(listaProdutos.isEmpty()){
+                    progressBarMeusProdutos.setVisibility(View.VISIBLE);
+
+                    // Definindo um timer para que se não recuperar os clientes em 3.5 segundos aparecer uma mensagem
+                    Handler handler = new Handler();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            if(progressBarMeusProdutos.getVisibility() == View.VISIBLE){
+                                textAvisoErro = findViewById(R.id.textAvisoErro);
+                                imageAvisoErro = findViewById(R.id.imageAvisoErro);
+
+
+                                textAvisoErro.setVisibility(View.VISIBLE);
+                                imageAvisoErro.setVisibility(View.VISIBLE);
+                                progressBarMeusProdutos.setVisibility(View.GONE);
+                            }
+                        }
+                    };
+                    handler.postDelayed(runnable, 3500);
+                }
             }
 
             @Override
@@ -167,7 +190,7 @@ public class MeusProdutosActivity extends AppCompatActivity {
                         intent.putExtra("idProduto", produtoSelecionado.getCodigo());
                         intent.putExtra("nomeProduto", produtoSelecionado.getNome());
                         intent.putExtra("precoProduto", produtoSelecionado.getPreco());
-                        intent.putExtra("qtndProduto", produtoSelecionado.getQuantidade());
+                        intent.putExtra("estoqueProduto", produtoSelecionado.getEstoque());
                         startActivity(intent);
                     }
 
