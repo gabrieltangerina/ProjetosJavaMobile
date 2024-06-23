@@ -54,21 +54,14 @@ public class AdapterProdutos extends RecyclerView.Adapter<AdapterProdutos.MyView
 
         holder.nome.setText(produto.getNome() + " (Cod.:" + produto.getCodigo() + ")");
         holder.containerProduto.setBackgroundResource(R.color.white);
-        
-        if (carrinhoViewModel != null) {
-            String codigoProduto = produto.getCodigo();
 
-            if (carrinhoViewModel.buscaPorId(codigoProduto)) {
-                holder.containerProduto.setBackgroundResource(R.color.pedidos_carrinho);
-            }
-        }
-
-        if(produto.getQuantidade() != 0){
-            holder.quantidade.setText("Qtnd: " + produto.getQuantidade());
+        String codigoProduto = produto.getCodigo();
+        if (CarrinhoViewModel.buscaPorIdStatic(codigoProduto)) {
+            Produto produtoCarrinho = CarrinhoViewModel.buscaPorIdRetornaProdutoStatic(codigoProduto);
+            holder.containerProduto.setBackgroundResource(R.color.pedidos_carrinho);
+            holder.quantidade.setText("Qtnd: " + produtoCarrinho.getQuantidade());
             double totalProduto = Double.parseDouble(produto.getQuantidade().toString()) * Double.parseDouble(produto.getPreco().toString());
             holder.preco.setText(String.format("Total: R$%.2f", totalProduto));
-
-            Log.d("QUANTIDADE ENTROU", produto.getNome() + " " + produto.getQuantidade());
 
             holder.valorUnidade.setVisibility(View.VISIBLE);
             holder.valorUnidade.setText("Unidade: R$" + produto.getPreco());
@@ -76,8 +69,21 @@ public class AdapterProdutos extends RecyclerView.Adapter<AdapterProdutos.MyView
             holder.valorUnidade.setVisibility(View.GONE);
             holder.quantidade.setText("Qtnd: " + produto.getEstoque());
             holder.preco.setText("R$" + produto.getPreco());
-            Log.d("QUANTIDADE NÃO ENTROU", produto.getNome() + " " + produto.getQuantidade());
         }
+
+
+//        if(produto.getQuantidade() != 0){
+//            holder.quantidade.setText("Qtnd: " + produto.getQuantidade());
+//            double totalProduto = Double.parseDouble(produto.getQuantidade().toString()) * Double.parseDouble(produto.getPreco().toString());
+//            holder.preco.setText(String.format("Total: R$%.2f", totalProduto));
+//
+//            holder.valorUnidade.setVisibility(View.VISIBLE);
+//            holder.valorUnidade.setText("Unidade: R$" + produto.getPreco());
+//        }else{
+//            holder.valorUnidade.setVisibility(View.GONE);
+//            holder.quantidade.setText("Qtnd: " + produto.getEstoque());
+//            holder.preco.setText("R$" + produto.getPreco());
+//        }
 
     }
 

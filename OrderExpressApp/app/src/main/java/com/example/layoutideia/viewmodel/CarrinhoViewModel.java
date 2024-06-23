@@ -100,6 +100,23 @@ public class CarrinhoViewModel extends ViewModel {
         return null;
     }
 
+    public static  Produto buscaPorIdRetornaProdutoStatic(String id){
+        for(Produto produto: itensCarrinho){
+            if(produto.getCodigo().equals(id)){
+                return produto;
+            }
+        }
+        return null;
+    }
+
+    public static boolean buscaPorIdStatic(String id){
+        for(Produto produto: itensCarrinho){
+            if(produto.getCodigo().equals(id)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public void atualizarItemCarrinho(String id, String quantidade, String preco){
         for(Produto produto: itensCarrinho){
