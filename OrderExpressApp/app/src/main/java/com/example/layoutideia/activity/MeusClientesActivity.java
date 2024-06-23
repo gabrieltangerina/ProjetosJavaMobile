@@ -90,15 +90,15 @@ public class MeusClientesActivity extends AppCompatActivity {
         recyclerClientes.setAdapter(adapterClientes);
         configurarClickRecyclerView();
 
+        textAvisoErro = findViewById(R.id.textAvisoErro);
+        imageAvisoErro = findViewById(R.id.imageAvisoErro);
+
         // Definindo um timer para que se não recuperar os clientes em 5 segundos aparecer uma mensagem
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
                 if(progressBarMeusClientes.getVisibility() == View.VISIBLE){
-                    textAvisoErro = findViewById(R.id.textAvisoErro);
-                    imageAvisoErro = findViewById(R.id.imageAvisoErro);
-
                     textAvisoErro.setVisibility(View.VISIBLE);
                     imageAvisoErro.setVisibility(View.VISIBLE);
                     progressBarMeusClientes.setVisibility(View.GONE);
@@ -199,6 +199,8 @@ public class MeusClientesActivity extends AppCompatActivity {
                 clientes.add(cliente);
                 adapterClientes.notifyDataSetChanged();
                 progressBarMeusClientes.setVisibility(View.GONE);
+                textAvisoErro.setVisibility(View.GONE);
+                imageAvisoErro.setVisibility(View.GONE);
             }
 
             @Override

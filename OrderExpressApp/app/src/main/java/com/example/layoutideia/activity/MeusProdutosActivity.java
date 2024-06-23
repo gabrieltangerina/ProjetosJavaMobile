@@ -88,7 +88,7 @@ public class MeusProdutosActivity extends AppCompatActivity {
         textAvisoErro = findViewById(R.id.textAvisoErro);
         imageAvisoErro = findViewById(R.id.imageAvisoErro);
 
-        // Definindo um timer para que se não recuperar os clientes em alguns segundos aparecer uma mensagem
+        // Definindo um timer para que se não recuperar os produtos em alguns segundos aparecer uma mensagem
         Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override

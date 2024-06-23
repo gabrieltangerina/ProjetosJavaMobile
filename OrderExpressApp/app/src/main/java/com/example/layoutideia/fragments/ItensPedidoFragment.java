@@ -26,6 +26,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -58,6 +59,8 @@ public class ItensPedidoFragment extends Fragment {
     private DatabaseReference produtosRef;
     private ChildEventListener childEventListenerProdutos;
     private ProgressBar progressBarProdutos;
+    private TextView textAvisoErro;
+    private ImageView imageAvisoErro;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,6 +91,23 @@ public class ItensPedidoFragment extends Fragment {
 
         // Pegando a referência da activity DadosPedido
         activity = (DadosPedidoActivity) getActivity();
+
+        // Definindo um timer para que se não recuperar os produtos em alguns segundos aparecer uma mensagem
+        Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if(progressBarProdutos.getVisibility() == View.VISIBLE){
+                    textAvisoErro = rootView.findViewById(R.id.textAvisoErro);
+                    imageAvisoErro = rootView.findViewById(R.id.imageAvisoErro);
+
+                    textAvisoErro.setVisibility(View.VISIBLE);
+                    imageAvisoErro.setVisibility(View.VISIBLE);
+                    progressBarProdutos.setVisibility(View.GONE);
+                }
+            }
+        };
+        handler.postDelayed(runnable, 3500);
 
         return rootView;
     }

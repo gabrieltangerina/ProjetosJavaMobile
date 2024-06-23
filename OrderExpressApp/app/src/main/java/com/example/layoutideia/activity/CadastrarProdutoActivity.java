@@ -142,8 +142,9 @@ public class CadastrarProdutoActivity extends AppCompatActivity {
                         Produto produto = new Produto();
                         produto.setCodigo(GeraCodigo.gerarCodigoNumerico());
                         produto.setNome(nomeProduto);
-                        String precoFormatado = formatarPreco(precoProduto);
-                        produto.setPreco(Double.parseDouble(precoFormatado));
+                        // String precoFormatado = formatarPreco(precoProduto);
+                        // produto.setPreco(Double.parseDouble(precoFormatado));
+                        produto.setPreco(Double.valueOf(precoProduto));
                         produto.setEstoque(Integer.parseInt(qtndProduto));
 
                         produto.salvarProduto(new DatabaseReference.CompletionListener() {

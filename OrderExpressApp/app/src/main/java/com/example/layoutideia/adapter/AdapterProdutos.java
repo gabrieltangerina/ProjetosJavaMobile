@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.layoutideia.R;
 import com.example.layoutideia.activity.DadosPedidoActivity;
+import com.example.layoutideia.fragments.ItensPedidoFragment;
 import com.example.layoutideia.model.Produto;
 import com.example.layoutideia.viewmodel.CarrinhoViewModel;
 
@@ -27,9 +28,6 @@ public class AdapterProdutos extends RecyclerView.Adapter<AdapterProdutos.MyView
     public AdapterProdutos(List<Produto> listaProdutos, CarrinhoViewModel carrinhoViewModel) {
         this.listaProdutos = listaProdutos;
         this.carrinhoViewModel = carrinhoViewModel;
-        for(Produto produto: carrinhoViewModel.getItensCarrinho()){
-            Log.d("AdapterProdutos", produto.getNome());
-        }
     }
 
     public AdapterProdutos(List<Produto> listaProdutos) {
@@ -70,12 +68,15 @@ public class AdapterProdutos extends RecyclerView.Adapter<AdapterProdutos.MyView
             double totalProduto = Double.parseDouble(produto.getQuantidade().toString()) * Double.parseDouble(produto.getPreco().toString());
             holder.preco.setText(String.format("Total: R$%.2f", totalProduto));
 
+            Log.d("QUANTIDADE ENTROU", produto.getNome() + " " + produto.getQuantidade());
+
             holder.valorUnidade.setVisibility(View.VISIBLE);
             holder.valorUnidade.setText("Unidade: R$" + produto.getPreco());
         }else{
             holder.valorUnidade.setVisibility(View.GONE);
             holder.quantidade.setText("Qtnd: " + produto.getEstoque());
             holder.preco.setText("R$" + produto.getPreco());
+            Log.d("QUANTIDADE NÃO ENTROU", produto.getNome() + " " + produto.getQuantidade());
         }
 
     }

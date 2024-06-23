@@ -92,7 +92,7 @@
         android:drawablePadding="5dp"
         android:ems="10"
         android:hint="E-mail"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/editTextSenha"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
