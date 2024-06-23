@@ -29,10 +29,11 @@ OrderExpress é um aplicativo móvel projetado para simplificar e otimizar o ger
 ### Telas para a criação de um pedido
 <div displey="flex">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaSelecioneCliente.png" width="252px" height="500px">
-  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaFinanceiro.png" width="252px" height="500px">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaPedidosRecentes.png" width="252px" height="500px">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaInformacoesCliente.png" width="252px" height="500px">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaInformacoesPedido.png" width="252px" height="500px">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaItensPedido.png" width="252px" height="500px">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaCarrinho.png" width="252px" height="500px">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaDadosPedido.png" width="252px" height="500px">
 </div>
 
@@ -43,9 +44,21 @@ OrderExpress é um aplicativo móvel projetado para simplificar e otimizar o ger
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/MeusPedidosMensagem.png" width="252px" height="500px">
 </div>
 
-### Tela Meus Clientes e Alteração Clientes
+###Tela Meus Clientes e Cadastro e Alteração dos Clientes
 <div displey="flex">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaMeusClientes.png" width="252px" height="500px">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaDadosCliente.png" width="252px" height="500px">
   <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaClientesMensagem.png" width="252px" height="500px">
+</div>
+
+### Tela Meus Produtos e Cadastro e Alteração dos Produtos
+<div displey="flex">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaMeusProdutos.png" width="252px" height="500px">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaCadastrarProduto.png" width="252px" height="500px">
+</div>
+
+### Tela de Resumo Mensal de Vendas
+<div displey="flex">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaVendas.png" width="252px" height="500px">
+  <img src="https://github.com/gabrieltangerina/ProjetosJavaMobile/blob/main/OrderExpressDocs/TelaVendas2.png" width="252px" height="500px">
 </div>
