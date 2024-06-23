@@ -118,7 +118,12 @@ public class ConsultaPedidoActivity extends AppCompatActivity {
                 descricao = (String) getIntent().getExtras().getSerializable("Descricao");
                 dataPedido = (String) getIntent().getExtras().getSerializable("Data");
                 buttonConfirmar.setVisibility(View.GONE);
-                buttonExcluir.setVisibility(View.VISIBLE);
+
+                if(telaAnterior == 0){
+                    buttonExcluir.setVisibility(View.GONE);
+                }else{
+                    buttonExcluir.setVisibility(View.VISIBLE);
+                }
 
                 buttonExcluir.setOnClickListener(new View.OnClickListener() {
                     @Override

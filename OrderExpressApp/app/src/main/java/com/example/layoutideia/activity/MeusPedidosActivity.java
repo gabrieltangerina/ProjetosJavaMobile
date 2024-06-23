@@ -111,7 +111,7 @@ public class MeusPedidosActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        restaurarPedidos();
+        recuperarPedidos();
     }
 
     @Override
