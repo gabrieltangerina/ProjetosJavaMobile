@@ -12,6 +12,7 @@ OrderExpress é um aplicativo móvel projetado para simplificar e otimizar o ger
 - Cadastro e Login de vendedores
 - Cadastro de clientes
 - Criação de pedidos
+- Cadastro de produtos
 - Resumo mensal de pedidos
 
 ## Imagens do Projeto
