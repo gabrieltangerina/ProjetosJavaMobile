@@ -12,9 +12,7 @@ OrderExpress é um aplicativo móvel projetado para simplificar e otimizar o ger
 - Cadastro e Login de vendedores
 - Cadastro de clientes
 - Criação de pedidos
-- Seleção rápida dos produtos no pedido
-
-Pensando na rotina diária de um vendedor, o OrderExpress inclui uma funcionalidade para a seleção de produtos com base em seus códigos, que em um contexto real estariam presentes no catálogo de produtos da loja. Dessa forma, o vendedor pode simplesmente informar o código do produto e pressionar Enter. Um alerta será exibido para solicitar a quantidade desejada. Após inserir a quantidade e pressionar Enter novamente, o produto será adicionado ao carrinho. Esse processo agiliza significativamente a inclusão de itens no pedido, tornando a operação mais rápida e eficiente.
+- Resumo mensal de pedidos
 
 ## Imagens do Projeto
 
