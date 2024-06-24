@@ -1,5 +1,5 @@
 ## OrderExpress
-OrderExpress é um aplicativo móvel projetado para simplificar e otimizar o gerenciamento de pedidos para vendedores. Com ele, os vendedores podem cadastrar clientes, criar e gerenciar pedidos de forma eficiente. O aplicativo permite que os vendedores registrem os itens dos pedidos e adicionem detalhes importantes, como a forma de pagamento e uma descrição personalizada para cada pedido.
+OrderExpress é um aplicativo móvel desenvolvido para simplificar e otimizar o gerenciamento de pedidos para vendedores. Com ele, os vendedores podem cadastrar clientes, criar e gerenciar pedidos de forma eficiente, registrar produtos e visualizar seu lucro mensal. O aplicativo permite que os vendedores adicionem itens aos pedidos, especificando detalhes importantes como forma de pagamento e uma descrição personalizada para cada pedido.
 
 ## Tecnologias Usadas
 - Linguagem: Java
