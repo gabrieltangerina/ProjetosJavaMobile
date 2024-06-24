@@ -1,6 +1,6 @@
 # Aplicativos desenvolvidos em Java
 
-Olá e bem-vindo! Este é o meu repositório de showcase de projetos Java Mobile. Aqui, você encontrará alguns aplicativos desenvolvidos em Java para dispositivos móveis. Cada aplicativo é uma réplica de um serviço popular, o que me permitiu explorar e implementar funcionalidades amplamente reconhecidas e utilizadas pelas pessoas.
+Este é o meu repositório de showcase de projetos Java Mobile. Aqui, você encontrará alguns aplicativos desenvolvidos em Java para dispositivos móveis. Cada aplicativo é uma réplica de um serviço popular, o que me permitiu explorar e implementar funcionalidades amplamente reconhecidas e utilizadas pelas pessoas.
 
 # Sobre o repositório
 
